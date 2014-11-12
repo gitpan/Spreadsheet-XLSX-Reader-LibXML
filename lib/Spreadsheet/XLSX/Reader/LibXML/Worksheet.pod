@@ -4,14 +4,582 @@
 
 =head1 NAME
 
-Spreadsheet::XLSX::Reader::LibXML::Worksheet - Read xlsx worksheets with LibXML
+Spreadsheet::XLSX::Reader::LibXML  Worksheet POD - Read xlsx worksheets with LibXML
 
 =head1 DESCRIPTION
 
-As you may have noticed this is only the pod explaining the Worksheet class not the 
-actual class which is an amalgam of classes, roles, and traits each with its own code 
-file.
+If you want just learn the key elements of how to use the Worksheet instances returned 
+from L<Spreadsheet::XLSX::Reader::LibXML> this POD is for you.  I<You will also want to 
+skip the next paragraph.>  First, it is best to generate a worksheet instance with the 
+main class.  Once you have done that there are several ways to step through the data and 
+return information from the identified location.
 
-This POD has not been written yet!
+As you may have noticed this is only the pod explaining the Worksheet class not the file 
+containing the actual class.  In fact worksheets are built somwhat on the fly with an 
+amalgam of classes, roles, and traits each with its own code and POD file (combined).  
+For protips to manipulate each look at the pod for each and then review the bundled tests 
+for each.  In the POD for those classes are also found details on how to extend them.  
+Additionally the test cases generally build the smallest possible group of modules from 
+this package to isolate each set of functionality so the represent a good 'under the hood' 
+look at the way each is integrated into this larger package.  The trick for testing only 
+roles or classes missing all role functionality is using L<MooseX::ShortCut::BuildInstance>.  
+For protips on manipulating Worksheet instances start with the role 
+L<Spreadsheet::XLSX::Reader::LibXML::GetCell>.
+
+=head2 The way to set what type of information is returned
+
+There is a an attribute set in the primary instance L<Spreadsheet::XLSX::Reader::LibXML> 
+called L<group_return_type|/Spreadsheet::XLSX::Reader::LibXML#group_return_type>.  Setting 
+this attribute will return either a full L<Spreadsheet::XLSX::Reader::LibXML::Cell> instance, 
+just the unformatted value, or the formatted value.  For more details on the data available 
+in the Cell instance read the documentation for L<Spreadsheet::XLSX::Reader::LibXML::Cell>.
+
+=head2 Ways to select cells for reading
+
+These are the various functions that are available (independent of sheet parser type) to 
+select which cells to read.
+
+=head3 get_cell( $row, $column )
+
+=over
+
+B<Definition:> Indicate both the requested row and requested column and the information for 
+that position will be returned.  Both $row and $column are required
+
+B<Accepts:> the list ( $row, $column ) both required
+
+B<Returns:> see L<returns|/The way to set what type of information is returned> for details 
+on what is returned
+
+=back
+
+=head3 get_next_value
+
+=over
+
+B<Definition:> Reading left to right and top to bottom this will return the next cell with 
+a value.  This actually includes cells with no value but some unique formatting such as 
+cells that have been merged with other cells.
+
+B<Accepts:> nothing
+
+B<Returns:> see L<returns|/The way to set what type of information is returned> for details 
+on what is returned
+
+=back
+
+=head3 fetchrow_arrayref( $row )
+
+=over
+
+B<Definition:> In an homage to L<DBI> I included this function to return an array ref of 
+the cells or values in the requested $row.  If no row is requested this returns the 'next' 
+row.  In the array ref any empty and non unique cell will show as 'undef'.
+
+B<Accepts:> undef|$row = a row integer indicating the desired row
+
+B<Returns:> an array ref of all possible column positions in that row with data filled in 
+as appropriate.
+
+=back
+
+=head3 fetchrow_array( $row )
+
+=over
+
+B<Definition:> This function is just like L<fetchrow_arrayref|/fetchrow_array( $row )> 
+except it returns an array instead of an array ref
+
+B<Accepts:> undef = next|$row = a row integer indicating the desired row
+
+B<Returns:> an array of all possible column positions in that row with data filled in 
+as appropriate.
+
+=back
+
+=head3 set_headers( $header_row_list )
+
+=over
+
+B<Definition:> This function is used to set headers used in the function 
+L<fetchrow_hashref|/fetchrow_hashref( $row )>.  It accepts a list of row numbers that 
+will be collated into a set of headers used to build the hashref for each row.
+The header rows are coallated in sequence with the first number taking precedence.  
+The list is also used to set the lowest row of the headers in the table.  All rows 
+at that level and higher will be considered out of the table and will return undef 
+while setting the error instance.
+
+B<Accepts:> a list of row numbers
+
+B<Returns:> an array ref of the built headers for review
+
+=back
+
+=head3 fetchrow_hashref( $row )
+
+=over
+
+B<Definition:> This function is used to return a hashref representing the data in the 
+specified row.  If no $row value is passed it will return the 'next' row of data.  A call 
+to this function without L<setting|/set_headers( $header_row_list )> the headers first 
+will return undef and set the error instance.
+
+B<Accepts:> a target $row number for return values or undef meaning 'next'
+
+B<Returns:> a hash ref of the values for that row
+
+=back
+
+=head3 fetchrow_hashref( $row )################################################## Start Here
+
+=over
+
+B<Definition:> This function is used to return a hashref representing the data in the 
+specified row.  If no $row value is passed it will return the 'next' row of data.  A call 
+to this function without L<setting|/set_headers( $header_row_list )> the headers first 
+will return undef and set the error instance.
+
+B<Accepts:> a target $row number for return values or undef meaning 'next'
+
+B<Returns:> a hash ref of the values for that row
+
+=back
+
+=head2 Attributes
+
+Data passed to new when creating an instance (parser).  For modification of 
+these attributes see the listed 'attribute methods'. For more information on 
+attributes see L<Moose::Manual::Attributes>.
+
+=head3 error_inst
+
+=over
+
+B<Definition:> This attribute holds an 'error' object instance.  It should have 
+several methods for managing errors.  Currently no error codes or error translation 
+options are available but this should make implementation of that easier.
+
+B<Default:> a L<Spreadsheet::XLSX::Reader::LibXML::Error> instance with the 
+attributes set as;
+	
+	( should_warn => 0 )
+
+B<Range:> The minimum list of methods to implement for your own instance is;
+
+	error set_error clear_error set_warnings if_warn
+		
+=back
+
+B<attribute methods> Methods provided to adjust this attribute
+
+=head4 get_error_inst
+
+B<Definition:> returns this instance
+
+=head4 error
+
+B<Definition:> Used to get the most recently logged error
+
+=head4 set_error
+
+B<Definition:> used to set a new error string
+
+=head4 clear_error
+
+B<Definition:> used to clear the current error string in this attribute
+
+=head4 set_warnings
+
+B<Definition:> used to turn on or off real time warnings when errors are set
+
+=head4 if_warn
+
+B<Definition:> a method mostly used to extend this package and see if warnings 
+should be emitted.
+
+=head3 file_name
+
+=over
+
+B<Definition:> This attribute holds the full file name and path for the 
+xlsx file to be parsed.
+
+B<Default> no default - this must be provided to read a file
+
+B<Range> any unincrypted xlsx file that can be opened in Microsoft Excel
+		
+=back
+
+B<attribute methods> Methods provided to adjust this attribute
+
+=head4 set_file_name
+
+B<Definition:> change the set file name (this will reboot the workbook instance)
+
+=head4 has_file_name
+
+B<Definition:> this is fundamentally a way to see if the workbook loaded correctly
+
+=head3 file_creator
+
+=over
+
+B<Definition:> This holds the information stored in the Excel Metadata 
+for who created the file originally.  B<You shouldn't set this attribute 
+yourself.>
+
+B<Default> the value from the file
+
+B<Range> A string
+		
+=back
+
+B<attribute methods> Methods provided to adjust this attribute
+
+=head4 creator
+
+B<Definition:> returns the name of the file creator
+
+=head3 file_date_created
+
+=over
+
+B<Definition:> This holds the created date in the Excel Metadata 
+for when the file was first built.  B<You shouldn't set this attribute 
+yourself.>
+
+B<Default> the value from the file
+
+B<Range> A timestamp string (ISO ish)
+		
+=back
+
+B<attribute methods> Methods provided to adjust this attribute
+
+=head4 date_created
+
+B<Definition:> returns the date the file was created
+
+=head3 file_modified_by
+
+=over
+
+B<Definition:> This holds the information stored in the Excel Metadata 
+for who modified the file last.  B<You shouldn't set this attribute 
+yourself.>
+
+B<Default> the value from the file
+
+B<Range> A string
+		
+=back
+
+B<attribute methods> Methods provided to adjust this attribute
+
+=head4 modified_by
+
+B<Definition:> returns the user name of the person who last modified the file
+
+=head3 file_date_modified
+
+=over
+
+B<Definition:> This holds the last modified date in the Excel Metadata 
+for when the file was last changed.  B<You shouldn't set this attribute 
+yourself.>
+
+B<Default> the value from the file
+
+B<Range> A timestamp string (ISO ish)
+		
+=back
+
+B<attribute methods> Methods provided to adjust this attribute
+
+=head4 date_modified
+
+B<Definition:> returns the date when the file was last modified
+
+=head3 sheet_parser
+
+=over
+
+B<Definition:> This sets the way the .xlsx file is parsed.  For now the only 
+choice is 'reader'.
+
+B<Default> 'reader'
+
+B<Range> 'reader'
+		
+=back
+
+B<attribute methods> Methods provided to adjust this attribute
+
+=head4 set_parser_type
+
+B<Definition:> the way to change the parser type
+
+=head4 get_parser_type
+
+B<Definition:> returns the currently set parser type
+
+=head3 count_from_zero
+
+=over
+
+B<Definition:> Excel spreadsheets count from 1.  L<Spreadsheet::ParseExcel> 
+counts from zero.  This allows you to choose either way.
+
+B<Default> 1
+
+B<Range> 1 = counting from zero like Spreadsheet::ParseExcel, 
+0 = Counting from 1 lke Excel
+		
+=back
+
+B<attribute methods> Methods provided to adjust this attribute
+
+=head4 counting_from_zero
+
+B<Definition:> a way to check the current attribute setting
+
+=head4 set_count_from_zero
+
+B<Definition:> a way to change the current attribute setting
+
+=head3 file_boundary_flags
+
+=over
+
+B<Definition:> When you request data past the end of a row or past the bottom 
+of the data this package can return 'EOR' or 'EOF' to indicate that state.  
+This is especially helpful in 'while' loops.  The other option is to return 
+'undef'.  This is problematic if some cells in your table are empty which also 
+returns undef.
+
+B<Default> 1
+
+B<Range> 1 = return 'EOR' or 'EOF' flags as appropriate,
+0 = return undef when requesting a position that is out of bounds
+		
+=back
+
+B<attribute methods> Methods provided to adjust this attribute
+
+=head4 boundary_flag_setting
+
+B<Definition:> a way to check the current attribute setting
+
+=head4 change_boundary_flag
+
+B<Definition:> a way to change the current attribute setting
+
+=head3 empty_is_end
+
+=over
+
+B<Definition:> The excel convention is to read the table left to right and top 
+to bottom.  Some tables have uneven columns from row to row.  This allows the 
+several methods that take 'next' values to wrap after the last element with data 
+rather than going to the max column.
+
+B<Default> 0
+
+B<Range> 1 = treat all columns short of the max column for the sheet as being in 
+the table, 0 = end each row after the last cell with data rather than going to the 
+max sheet column
+		
+=back
+
+B<attribute methods> Methods provided to adjust this attribute
+
+=head4 is_empty_the_end
+
+B<Definition:> a way to check the current attribute setting
+
+=head4 set_empty_is_end
+
+B<Definition:> a way to set the current attribute setting
+
+=head3 from_the_edge
+
+=over
+
+B<Definition:> Some data tables start in the top left corner.  Others do not.  I 
+don't reccomend that practice but when aquiring data in the wild it is often good 
+to adapt.  This attribute sets whether the file reads from the top left edge or from 
+the top row with data and starting from the leftmost column with data.
+
+B<Default> 1
+
+B<Range> 1 = treat the top left corner of the sheet even if there is no data in 
+the top row or leftmost column, 0 = Set the minimum row and minimum columns to be 
+the first row and first column with data
+		
+=back
+
+B<attribute methods> Methods provided to adjust this attribute
+
+=head4 set_from_the_edge
+
+B<Definition:> a way to set the current attribute setting
+
+=head3 default_format_list
+
+=over
+
+B<Definition:> This is a departure from L<Spreadsheet::ParseExcel> for two reasons.  
+First, it doesn't use the same modules.  Second, this accepts a role with two methods 
+where ParseExcel accepts an object instance.
+
+B<Default> Spreadsheet::XLSX::Reader::LibXML::FmtDefault
+
+B<Range> a L<Moose> role with the methods 'get_defined_excel_format' and 
+'change_output_encoding' it should be noted that libxml2 which is the underlying code 
+for L<XML::LibXML> allways attempts to get the data into perl friendly strings.  That 
+means this should only tweak the data on the way out and does not affect the data on the 
+way in.
+		
+=back
+
+B<attribute methods> Methods provided to adjust this attribute
+
+=head4 get_default_format_list
+
+B<Definition:> a way to check the current attribute setting
+
+=head4 set_default_format_list
+
+B<Definition:> a way to set the current attribute setting
+
+=head3 format_string_parser
+
+=over
+
+B<Definition:> This is the interpreter that turns the excel into a L<Type::Tiny> coercion.  
+If you don't like the output or the method you can write your own Moose Role and add it here.
+
+B<Default> Spreadsheet::XLSX::Reader::LibXML::ParseExcelFormatStrings
+
+B<Range> a L<Moose> role with the method 'parse_excel_format_string'
+		
+=back
+
+B<attribute methods> Methods provided to adjust this attribute
+
+=head4 get_format_string_parser
+
+B<Definition:> a way to check the current attribute setting
+
+=head4 set_format_string_parser
+
+B<Definition:> a way to set the current attribute setting
+
+=head3 group_return_type
+
+=over
+
+B<Definition:> Traditionally ParseExcel returns a cell object with lots of methods 
+to reveal information about the cell.  In reality this is probably not used very much 
+so in the interest of simplifying you can get a cell object instance set to the cell 
+information.  Or you can just get the raw value in the cell or you can get the cell value 
+formatted either the way the sheet specified or the way you specify.  See the 
+'custom_formats' attribute for the L<Spreadsheet::XLSX::Reader::LibXML::Worksheet> class 
+to insert custom targeted formats for use with the parser.  All empty cells return undef 
+no matter what.
+
+B<Default> instance
+
+B<Range> instance = returns a populated L<Spreadsheet::XLSX::Reader::LibXML::Cell> instance,
+unformatted = returns the raw value of the cell with no modifications, value = returns just 
+the formatted value stored in the excel cell
+		
+=back
+
+B<attribute methods> Methods provided to adjust this attribute
+
+=head4 get_group_return_type
+
+B<Definition:> a way to check the current attribute setting
+
+=head4 set_group_return_type
+
+B<Definition:> a way to set the current attribute setting
+
+=head1 BUILD / INSTALL from Source
+
+=over
+	
+B<1.> Download a compressed file with the code
+	
+B<2.> Extract the code from the compressed file.  If you are using tar this should work:
+
+        tar -zxvf Spreadsheet-XLSX-Reader-LibXML-v0.xx.tar.gz
+
+B<3.> Change (cd) into the extracted directory
+
+=back
+
+(For Windows find what version of make was used to compile your perl)
+
+	perl  -V:make
+
+Then
+(for Windows substitute the correct make function (s/make/dmake/g)?)
+
+	>perl Makefile.PL
+
+	>make
+
+	>make test
+
+	>make install # As sudo/root
+
+	>make clean
+
+=head1 SUPPORT
+
+=over
+
+L<github Spreadsheet::XLSX::Reader::LibXML/issues|https://github.com/jandrew/Spreadsheet-XLSX-Reader-LibXML/issues>
+
+=back
+
+=head1 TODO
+
+=over
+
+B<1.> Add a pivot table reader (Not just read the values from the sheet)
+
+B<2.> Add calc chain methods
+
+B<3.> Add more exposure to workbook formatting methods
+
+B<4.> Build a DOM parser alternative for the sheets
+(Theoretically faster than the reader but uses more memory)
+
+=back
+
+=head1 AUTHOR
+
+=over
+
+=item Jed Lund
+
+=item jandrew@cpan.org
+
+=back
+
+=head1 COPYRIGHT
+
+This program is free software; you can redistribute
+it and/or modify it under the same terms as Perl itself.
+
+The full text of the license can be found in the
+LICENSE file included with this module.
+
+This software is copyrighted (c) 2014 by Jed Lund
 
 =cut
+
+#########1#########2 main pod documentation end  5#########6#########7#########8#########9

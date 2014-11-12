@@ -488,7 +488,7 @@ __END__
 
 =head1 NAME
 
-Spreadsheet::XLSX::Reader::LibXML::CellToRowColumn - Translate Excel cell IDs to row column
+Spreadsheet::XLSX::Reader::LibXML::GetCell - Top level xlsx worksheet interface
     
 =head1 DESCRIPTION
 

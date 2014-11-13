@@ -6,6 +6,10 @@
 
 Spreadsheet::XLSX::Reader::LibXML  Worksheet POD - Read xlsx worksheets with LibXML
 
+=head1 SYNOPSIS
+
+See the SYNOPSIS in L<Spreadsheet::XLSX::Reader::LibXML>
+
 =head1 DESCRIPTION
 
 If you want just learn the key elements of how to use the Worksheet instances returned 
@@ -107,7 +111,9 @@ will be collated into a set of headers used to build the hashref for each row.
 The header rows are coallated in sequence with the first number taking precedence.  
 The list is also used to set the lowest row of the headers in the table.  All rows 
 at that level and higher will be considered out of the table and will return undef 
-while setting the error instance.
+while setting the error instance.  If some of the columns do not have values then 
+the instance will auto generate unique headers for each empty header column to fill 
+out the header ref.
 
 B<Accepts:> a list of row numbers
 
@@ -130,381 +136,171 @@ B<Returns:> a hash ref of the values for that row
 
 =back
 
-=head3 fetchrow_hashref( $row )################################################## Start Here
-
-=over
-
-B<Definition:> This function is used to return a hashref representing the data in the 
-specified row.  If no $row value is passed it will return the 'next' row of data.  A call 
-to this function without L<setting|/set_headers( $header_row_list )> the headers first 
-will return undef and set the error instance.
-
-B<Accepts:> a target $row number for return values or undef meaning 'next'
-
-B<Returns:> a hash ref of the values for that row
-
-=back
-
 =head2 Attributes
 
-Data passed to new when creating an instance (parser).  For modification of 
-these attributes see the listed 'attribute methods'. For more information on 
-attributes see L<Moose::Manual::Attributes>.
+These are attributes that affect the behaviour of the returned data in the worksheet 
+instance.  In general you would not set these on instance generation, I<Because the primary 
+class will generate this instance for you>.  Rather you would use the attribue methods 
+listed with each attribute to change the attribute after the worksheet instance has been 
+generated.
 
-=head3 error_inst
+=head3 min_header_col
 
 =over
 
-B<Definition:> This attribute holds an 'error' object instance.  It should have 
-several methods for managing errors.  Currently no error codes or error translation 
-options are available but this should make implementation of that easier.
+B<Definition:> This attribute affects the hashref that is returned in the method 
+L<fetchrow_hashref|/fetchrow_hashref( $row )>.  If the table you are reading does not 
+start in the first column of the sheet then you need to indicate where to start.  
+Otherwize the fetchrow_hashref method will return auto generated headers and attach 
+them to the cell data outside your table but inside the sheet data boundaries.  This 
+attribute tells fetchrow_hashref what column to use to start the hash ref build.
 
-B<Default:> a L<Spreadsheet::XLSX::Reader::LibXML::Error> instance with the 
-attributes set as;
+B<Default:> undef (which is equivalent to the minimum column of the sheet)
+
+B<Range:> The minimum column of the sheet to or less than the
+L<max_header_col|/max_header_col>
+		
+=back
+
+B<attribute methods> Methods provided to adjust this attribute
+
+=head4 get_min_header_col
+
+B<Definition:> returns the value stored in the attribute
+
+=head4 set_min_header_col
+
+B<Definition:> Sets a new value for the attribute
+
+=head4 has_min_header_col
+
+B<Definition:> Indicates if the attribute has a stored value
+
+=head3 max_header_col
+
+=over
+
+B<Definition:> This attribute affects the hashref that is returned in the method 
+L<fetchrow_hashref|/fetchrow_hashref( $row )>.  If the table you are reading ends 
+before the max column of the sheet then you need indicate where to stop reading.  
+Otherwize the fetchrow_hashref method will return auto generated headers and attach 
+them to the cell values outside your table.  This attribute tells fetchrow_hashref 
+what column to use to end the hash ref build.
+
+B<Default:> undef (equal to the maximum column of the sheet)
+
+B<Range:> The maximum column of the sheet to or less than the 
+L<min_header_col|/min_header_col>
+		
+=back
+
+B<attribute methods> Methods provided to adjust this attribute
+
+=head4 get_max_header_col
+
+B<Definition:> returns the value stored in the attribute
+
+=head4 set_max_header_col
+
+B<Definition:> Sets a new value for the attribute
+
+=head4 has_max_header_col
+
+B<Definition:> Indicates if the attribute has a stored value
+
+=head3 custom_formats
+
+=over
+
+B<Definition:> This package will generate value conversions that generally 
+match the numerical conversions set in the Excel spreadsheet.  However, it 
+may be that you want to convert the unformatted values for certain cells, 
+rows, or columns in some user defined way.  Build an object instance that 
+has the two following methods; 'assert_coerce' and 'display_name'.  Then 
+place it here in this attribute as a value to a hash key that is keyed on 
+the target Cell ID, or the row number, or the Column letter callout and 
+this package will assign that conversion when calling 'value' on the cell 
+rather than the conversion stored in the Excel spreadsheet.
+
+B<Default:> {} = no custom conversions
+
+B<Range:> keys representing cell ID's, row numbers, or column letter callouts
+
+B<Example:>
+
+Building a converter on the fly (or use L<Type::Library> or L<MooseX::Types>
+
+	use DateTimeX::Format::Excel;
+	use DateTime::Format::Flexible;
+	use Type::Coercion;
+	use Type::Tiny;
+	my	@args_list	= ( system_type => 'apple_excel' );
+	my	$converter	= DateTimeX::Format::Excel->new( @args_list );
+	my	$string_via	= sub{ 
+							my	$str = $_[0];
+							return DateTime::Format::Flexible->parse_datetime( $str );#my	$dt	= 
+							#~ return $dt->format_cldr( 'yyyy-M-d' );
+						};
+	my	$num_via	= sub{
+							my	$num = $_[0];
+							return $converter->parse_datetime( $num );#my	$dt = 
+							#~ return $dt->format_cldr( 'yyyy-M-d' );
+						};
 	
-	( should_warn => 0 )
+	# Turn date strings or Excel date numbers to DateTime objects!
+	my	$date_time_from_value = Type::Coercion->new( 
+		type_coercion_map => [ Num, $num_via, Str, $string_via, ],
+	);
+	$date_time_type = Type::Tiny->new(
+			name		=> 'Custom_date_type',
+			constraint	=> sub{ ref($_) eq 'DateTime' },
+			coercion	=> $date_time_from_value,
+		);
+	
+	# Deep coercion! to handle first the $date_time_from_value coercion and then 
+	#    build a specific date string output
+	$string_type = Type::Tiny->new(
+			name		=> 'YYYYMMDD',
+			constraint	=> sub{
+				!$_ or (
+				$_ =~ /^\d{4}\-(\d{2})-(\d{2})$/ and
+				$1 > 0 and $1 < 13 and $2 > 0 and $2 < 32 )
+			},
+			coercion	=> Type::Coercion->new(
+				type_coercion_map =>[
+					$date_time_type->coercibles, sub{ my $tmp = $date_time_type->coerce( $_ ); $tmp->format_cldr( 'yyyy-MM-dd' ) },
+				],
+			),
+	);
 
-B<Range:> The minimum list of methods to implement for your own instance is;
+Setting custom conversions to use for the worksheet
 
-	error set_error clear_error set_warnings if_warn
+	my $worksheet = $workbook->worksheet( 'TargetWorksheetName' );
+	$worksheet->set_custom_formats( {
+		E10	=> $date_time_type,
+		10	=> $string_type,
+		D14	=> $string_type,
+	} );
 		
 =back
 
 B<attribute methods> Methods provided to adjust this attribute
 
-=head4 get_error_inst
+=head4 set_custom_formats
 
-B<Definition:> returns this instance
+B<Definition:> Sets a new (complete) hashref for the attribute
 
-=head4 error
+=head4 has_custom_format( $key )
 
-B<Definition:> Used to get the most recently logged error
+B<Definition:> checks if the specific custom format $key is set
 
-=head4 set_error
+=head4 set_custom_format( $key => $coercion, ... )
 
-B<Definition:> used to set a new error string
+B<Definition:> sets the specific custom format $key(s) with $coercion(s)
 
-=head4 clear_error
+=head4 get_custom_format( $key )
 
-B<Definition:> used to clear the current error string in this attribute
-
-=head4 set_warnings
-
-B<Definition:> used to turn on or off real time warnings when errors are set
-
-=head4 if_warn
-
-B<Definition:> a method mostly used to extend this package and see if warnings 
-should be emitted.
-
-=head3 file_name
-
-=over
-
-B<Definition:> This attribute holds the full file name and path for the 
-xlsx file to be parsed.
-
-B<Default> no default - this must be provided to read a file
-
-B<Range> any unincrypted xlsx file that can be opened in Microsoft Excel
-		
-=back
-
-B<attribute methods> Methods provided to adjust this attribute
-
-=head4 set_file_name
-
-B<Definition:> change the set file name (this will reboot the workbook instance)
-
-=head4 has_file_name
-
-B<Definition:> this is fundamentally a way to see if the workbook loaded correctly
-
-=head3 file_creator
-
-=over
-
-B<Definition:> This holds the information stored in the Excel Metadata 
-for who created the file originally.  B<You shouldn't set this attribute 
-yourself.>
-
-B<Default> the value from the file
-
-B<Range> A string
-		
-=back
-
-B<attribute methods> Methods provided to adjust this attribute
-
-=head4 creator
-
-B<Definition:> returns the name of the file creator
-
-=head3 file_date_created
-
-=over
-
-B<Definition:> This holds the created date in the Excel Metadata 
-for when the file was first built.  B<You shouldn't set this attribute 
-yourself.>
-
-B<Default> the value from the file
-
-B<Range> A timestamp string (ISO ish)
-		
-=back
-
-B<attribute methods> Methods provided to adjust this attribute
-
-=head4 date_created
-
-B<Definition:> returns the date the file was created
-
-=head3 file_modified_by
-
-=over
-
-B<Definition:> This holds the information stored in the Excel Metadata 
-for who modified the file last.  B<You shouldn't set this attribute 
-yourself.>
-
-B<Default> the value from the file
-
-B<Range> A string
-		
-=back
-
-B<attribute methods> Methods provided to adjust this attribute
-
-=head4 modified_by
-
-B<Definition:> returns the user name of the person who last modified the file
-
-=head3 file_date_modified
-
-=over
-
-B<Definition:> This holds the last modified date in the Excel Metadata 
-for when the file was last changed.  B<You shouldn't set this attribute 
-yourself.>
-
-B<Default> the value from the file
-
-B<Range> A timestamp string (ISO ish)
-		
-=back
-
-B<attribute methods> Methods provided to adjust this attribute
-
-=head4 date_modified
-
-B<Definition:> returns the date when the file was last modified
-
-=head3 sheet_parser
-
-=over
-
-B<Definition:> This sets the way the .xlsx file is parsed.  For now the only 
-choice is 'reader'.
-
-B<Default> 'reader'
-
-B<Range> 'reader'
-		
-=back
-
-B<attribute methods> Methods provided to adjust this attribute
-
-=head4 set_parser_type
-
-B<Definition:> the way to change the parser type
-
-=head4 get_parser_type
-
-B<Definition:> returns the currently set parser type
-
-=head3 count_from_zero
-
-=over
-
-B<Definition:> Excel spreadsheets count from 1.  L<Spreadsheet::ParseExcel> 
-counts from zero.  This allows you to choose either way.
-
-B<Default> 1
-
-B<Range> 1 = counting from zero like Spreadsheet::ParseExcel, 
-0 = Counting from 1 lke Excel
-		
-=back
-
-B<attribute methods> Methods provided to adjust this attribute
-
-=head4 counting_from_zero
-
-B<Definition:> a way to check the current attribute setting
-
-=head4 set_count_from_zero
-
-B<Definition:> a way to change the current attribute setting
-
-=head3 file_boundary_flags
-
-=over
-
-B<Definition:> When you request data past the end of a row or past the bottom 
-of the data this package can return 'EOR' or 'EOF' to indicate that state.  
-This is especially helpful in 'while' loops.  The other option is to return 
-'undef'.  This is problematic if some cells in your table are empty which also 
-returns undef.
-
-B<Default> 1
-
-B<Range> 1 = return 'EOR' or 'EOF' flags as appropriate,
-0 = return undef when requesting a position that is out of bounds
-		
-=back
-
-B<attribute methods> Methods provided to adjust this attribute
-
-=head4 boundary_flag_setting
-
-B<Definition:> a way to check the current attribute setting
-
-=head4 change_boundary_flag
-
-B<Definition:> a way to change the current attribute setting
-
-=head3 empty_is_end
-
-=over
-
-B<Definition:> The excel convention is to read the table left to right and top 
-to bottom.  Some tables have uneven columns from row to row.  This allows the 
-several methods that take 'next' values to wrap after the last element with data 
-rather than going to the max column.
-
-B<Default> 0
-
-B<Range> 1 = treat all columns short of the max column for the sheet as being in 
-the table, 0 = end each row after the last cell with data rather than going to the 
-max sheet column
-		
-=back
-
-B<attribute methods> Methods provided to adjust this attribute
-
-=head4 is_empty_the_end
-
-B<Definition:> a way to check the current attribute setting
-
-=head4 set_empty_is_end
-
-B<Definition:> a way to set the current attribute setting
-
-=head3 from_the_edge
-
-=over
-
-B<Definition:> Some data tables start in the top left corner.  Others do not.  I 
-don't reccomend that practice but when aquiring data in the wild it is often good 
-to adapt.  This attribute sets whether the file reads from the top left edge or from 
-the top row with data and starting from the leftmost column with data.
-
-B<Default> 1
-
-B<Range> 1 = treat the top left corner of the sheet even if there is no data in 
-the top row or leftmost column, 0 = Set the minimum row and minimum columns to be 
-the first row and first column with data
-		
-=back
-
-B<attribute methods> Methods provided to adjust this attribute
-
-=head4 set_from_the_edge
-
-B<Definition:> a way to set the current attribute setting
-
-=head3 default_format_list
-
-=over
-
-B<Definition:> This is a departure from L<Spreadsheet::ParseExcel> for two reasons.  
-First, it doesn't use the same modules.  Second, this accepts a role with two methods 
-where ParseExcel accepts an object instance.
-
-B<Default> Spreadsheet::XLSX::Reader::LibXML::FmtDefault
-
-B<Range> a L<Moose> role with the methods 'get_defined_excel_format' and 
-'change_output_encoding' it should be noted that libxml2 which is the underlying code 
-for L<XML::LibXML> allways attempts to get the data into perl friendly strings.  That 
-means this should only tweak the data on the way out and does not affect the data on the 
-way in.
-		
-=back
-
-B<attribute methods> Methods provided to adjust this attribute
-
-=head4 get_default_format_list
-
-B<Definition:> a way to check the current attribute setting
-
-=head4 set_default_format_list
-
-B<Definition:> a way to set the current attribute setting
-
-=head3 format_string_parser
-
-=over
-
-B<Definition:> This is the interpreter that turns the excel into a L<Type::Tiny> coercion.  
-If you don't like the output or the method you can write your own Moose Role and add it here.
-
-B<Default> Spreadsheet::XLSX::Reader::LibXML::ParseExcelFormatStrings
-
-B<Range> a L<Moose> role with the method 'parse_excel_format_string'
-		
-=back
-
-B<attribute methods> Methods provided to adjust this attribute
-
-=head4 get_format_string_parser
-
-B<Definition:> a way to check the current attribute setting
-
-=head4 set_format_string_parser
-
-B<Definition:> a way to set the current attribute setting
-
-=head3 group_return_type
-
-=over
-
-B<Definition:> Traditionally ParseExcel returns a cell object with lots of methods 
-to reveal information about the cell.  In reality this is probably not used very much 
-so in the interest of simplifying you can get a cell object instance set to the cell 
-information.  Or you can just get the raw value in the cell or you can get the cell value 
-formatted either the way the sheet specified or the way you specify.  See the 
-'custom_formats' attribute for the L<Spreadsheet::XLSX::Reader::LibXML::Worksheet> class 
-to insert custom targeted formats for use with the parser.  All empty cells return undef 
-no matter what.
-
-B<Default> instance
-
-B<Range> instance = returns a populated L<Spreadsheet::XLSX::Reader::LibXML::Cell> instance,
-unformatted = returns the raw value of the cell with no modifications, value = returns just 
-the formatted value stored in the excel cell
-		
-=back
-
-B<attribute methods> Methods provided to adjust this attribute
-
-=head4 get_group_return_type
-
-B<Definition:> a way to check the current attribute setting
-
-=head4 set_group_return_type
-
-B<Definition:> a way to set the current attribute setting
+B<Definition:> returns the specific custom format for that $key (see has_custom_format )
 
 =head1 BUILD / INSTALL from Source
 
@@ -549,14 +345,11 @@ L<github Spreadsheet::XLSX::Reader::LibXML/issues|https://github.com/jandrew/Spr
 
 =over
 
-B<1.> Add a pivot table reader (Not just read the values from the sheet)
+B<1.> Add a way to set manual headers for fetchrow_hashref
 
-B<2.> Add calc chain methods
+B<2.> Add a pivot table reader (sometimes returns different values than just the sheet shows)
 
-B<3.> Add more exposure to workbook formatting methods
-
-B<4.> Build a DOM parser alternative for the sheets
-(Theoretically faster than the reader but uses more memory)
+B<3.> Add more exposure to worksheet formatting values
 
 =back
 

@@ -25,3 +25,12 @@ v0.7_1    2014-11-12 07:41:39-08:00 America/Los_Angeles
 
 	+ POD for the main module complete
 	+ Improved POD for the worksheet module
+
+v0.10.1   2014-11-13 05:37:32-08:00 America/Los_Angeles
+
+	+ Finished the Worksheet POD
+	+ Completed the Cell POD
+	+ Completed the Error POD
+	+ Completed the CellToColumnRow POD
+	+ Another (but not final0 proofread of the Spreadsheet::XLSX::Reader::LibXML POD
+	+ Release with a Beta rev to try and Index on MetaCPAN

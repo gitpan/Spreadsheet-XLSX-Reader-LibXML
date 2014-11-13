@@ -2,7 +2,7 @@ package Spreadsheet::XLSX::Reader::LibXML;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::AUTHORITY = 'cpan:JANDREW';
 }
-use version; our $VERSION = qv('v0.7_1');
+use version; our $VERSION = qv('v0.10.1');
 
 use 5.010;
 use	Moose;
@@ -770,13 +770,13 @@ The following uses the 'TestBook.xlsx' file found in the t/test_files/ folder
 	# 20: Unformatted = 5
 	# 21: 
 	# 22: Row, Col    = (1, 2)
-	# 23: Value       = 2017-2-14
+	# 23: Value       = 2017-2-14 #(shows as 2/14/2017 in the sheet)
 	# 24: Unformatted = 41318
 	# 25: 
 	# More intermediate rows ... 
 	# 82: 
 	# 83: Row, Col    = (6, 2)
-	# 84: Value       = 2016-2-6
+	# 84: Value       = 2016-2-6 #(shows as 2/6/2016 in the sheet)
 	# 85: Unformatted = 40944
 	###########################
 
@@ -785,31 +785,37 @@ The following uses the 'TestBook.xlsx' file found in the t/test_files/ folder
 =head1 DESCRIPTION
 
 This is another module for parsing Excel 2007+ workbooks.  The goal of this package is 
-three fold.  First, adhere more closely to the L<Spreadsheet::ParseExcel> API so 
-that less work would be needed to integrate both of them.  Second, to provide an 
-XLSX sheet parser that is built on L<XML::LibXML>.  I<The other two primary options 
-for XLSX parsing on CPAN use either a one-off XML parser or L<XML::Twig> and it was 
-difficult for me to tell if the bugs I encountered with them were associated with 
-the XML parsers or just inherent to the reader itself.  By the time I had educated 
-myself enough to know the difference I had written this.>  Finally, I wanted to 
-improve integrated date handling so that custom format development and implementation 
-would be easier.  I leveraged coercions from L<Type::Coercion> to do this but anything 
-that follows that general format will work here.  Allthough, L<XML::LibXML> has multiple 
-ways to read an XML file this release only has an L<XML::LibXML::Reader> parser.  
-Future iterations could include a DOM parser option.  
+three fold.  First, as close as possible produce the same output as is visible in an 
+excel spreadsheet with exposure to underlying settings from Excel.  Second, adhere as 
+close as is reasonable to the L<Spreadsheet::ParseExcel> API where it doesn't conflict 
+with the first objective so that less work would be needed to integrate both of them.  
+Third, to provide an XLSX sheet parser that is built on L<XML::LibXML>.  The other 
+two primary options for XLSX parsing on CPAN use either a one-off XML parser 
+(L<Spreadsheet::XLSX>) or L<XML::Twig> (L<Spreadsheet::ParseXLSX>).  In general if 
+either of them already work for you without issue then there is no reason to change to this.  
+I personally found some bugs and functionality boundaries in both that I wanted to improve 
+and by the time I had educated myself enough to make improvement suggestions including 
+root causing the bugs to either the XML parser or the reader logic I had written this.
 
 In the process of learning and building I also wrote some additional features for 
-this parser that are not found in the L<Spreadsheet::ParseExcel> package.  Read the 
-details below for more information.  For instance in the L<SYNOPSIS|/SYNOPSIS> the 
-'$parser' and the '$workbook' are actually the same class.  You could combine both 
-steps by calling new with the 'file_name' attribute called out.  Afterward it is 
-still possible to call ->error on the instance.  On the other hand this package does 
-not yet provide the same access to the formatting elements provided in 
-L<Spreadsheet::ParseExcel>.  That is on the longish and incomplete TODO list.
+this parser that are not found in the L<Spreadsheet::ParseExcel> package.  For instance 
+in the L<SYNOPSIS|/SYNOPSIS> the '$parser' and the '$workbook' are actually the same class.  
+You could combine both steps by calling new with the 'file_name' attribute called out.  
+Afterward it is still possible to call ->error on the instance.  Another improvement 
+(From my perspective) is date handling.  This allows simple pluggable custom output format 
+that is more flexible than other options.  I leveraged coercions from L<Type::Coercion> 
+to do this but anything that follows that general format will work here.  Additionally,
+this is a L<Moose> based package.  As such it is designed to be (fairly) extensible by 
+writing roles and adding them to this package rather than requireing that you 
+extend the package to some new branch.  Read the full documentation for all opportunities!
 
-This is a L<Moose> based package.  As such it is designed to be (fairly) extensible.  
-Some design departures in this module were driven by Excel's new organization of the 
-XML format but others were Moose driven to support extensibility.
+On the other hand, L<XML::LibXML> has multiple ways to read an XML file this release only 
+has an L<XML::LibXML::Reader> parser option.  Future iterations could include a DOM parser 
+option.  Additionally this package does not (yet0 provide the same access to the formatting 
+elements provided in L<Spreadsheet::ParseExcel>.  That is on the longish and incomplete TODO 
+list.
+
+
 
 =head2 Primary Methods
 

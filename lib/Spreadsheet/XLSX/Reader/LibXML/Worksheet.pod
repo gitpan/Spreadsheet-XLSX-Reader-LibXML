@@ -4,11 +4,11 @@
 
 =head1 NAME
 
-Spreadsheet::XLSX::Reader::LibXML  Worksheet POD - Read xlsx worksheets with LibXML
+Spreadsheet::XLSX::Reader::LibXML::Worksheet - Read xlsx worksheets with LibXML
 
 =head1 SYNOPSIS
 
-See the SYNOPSIS in L<Spreadsheet::XLSX::Reader::LibXML>
+See the SYNOPSIS in L<Spreadsheet::XLSX::Reader::LibXML> (The Workbook level class)
 
 =head1 DESCRIPTION
 
@@ -166,15 +166,27 @@ B<attribute methods> Methods provided to adjust this attribute
 
 =head4 get_min_header_col
 
+=over
+
 B<Definition:> returns the value stored in the attribute
+
+=back
 
 =head4 set_min_header_col
 
+=over
+
 B<Definition:> Sets a new value for the attribute
+
+=back
 
 =head4 has_min_header_col
 
+=over
+
 B<Definition:> Indicates if the attribute has a stored value
+
+=back
 
 =head3 max_header_col
 
@@ -198,15 +210,27 @@ B<attribute methods> Methods provided to adjust this attribute
 
 =head4 get_max_header_col
 
+=over
+
 B<Definition:> returns the value stored in the attribute
+
+=back
 
 =head4 set_max_header_col
 
+=over
+
 B<Definition:> Sets a new value for the attribute
+
+=back
 
 =head4 has_max_header_col
 
+=over
+
 B<Definition:> Indicates if the attribute has a stored value
+
+=back
 
 =head3 custom_formats
 
@@ -288,19 +312,35 @@ B<attribute methods> Methods provided to adjust this attribute
 
 =head4 set_custom_formats
 
+=over
+
 B<Definition:> Sets a new (complete) hashref for the attribute
+
+=back
 
 =head4 has_custom_format( $key )
 
+=over
+
 B<Definition:> checks if the specific custom format $key is set
+
+=back
 
 =head4 set_custom_format( $key => $coercion, ... )
 
+=over
+
 B<Definition:> sets the specific custom format $key(s) with $coercion(s)
+
+=back
 
 =head4 get_custom_format( $key )
 
+=over
+
 B<Definition:> returns the specific custom format for that $key (see has_custom_format )
+
+=back
 
 =head1 BUILD / INSTALL from Source
 

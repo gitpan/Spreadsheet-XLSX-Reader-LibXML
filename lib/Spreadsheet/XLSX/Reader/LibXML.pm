@@ -2,7 +2,7 @@ package Spreadsheet::XLSX::Reader::LibXML;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::AUTHORITY = 'cpan:JANDREW';
 }
-use version; our $VERSION = qv('v0.10.1');
+use version; our $VERSION = qv('v0.10.2');
 
 use 5.010;
 use	Moose;
@@ -1013,28 +1013,52 @@ B<attribute methods> Methods provided to adjust this attribute
 
 =head4 get_error_inst
 
+=over
+
 B<Definition:> returns this instance
+
+=back
 
 =head4 error
 
+=over
+
 B<Definition:> Used to get the most recently logged error
+
+=back
 
 =head4 set_error
 
+=over
+
 B<Definition:> used to set a new error string
+
+=back
 
 =head4 clear_error
 
+=over
+
 B<Definition:> used to clear the current error string in this attribute
+
+=back
 
 =head4 set_warnings
 
+=over
+
 B<Definition:> used to turn on or off real time warnings when errors are set
+
+=back
 
 =head4 if_warn
 
+=over
+
 B<Definition:> a method mostly used to extend this package and see if warnings 
 should be emitted.
+
+=back
 
 =head3 file_name
 
@@ -1053,11 +1077,19 @@ B<attribute methods> Methods provided to adjust this attribute
 
 =head4 set_file_name
 
+=over
+
 B<Definition:> change the set file name (this will reboot the workbook instance)
+
+=back
 
 =head4 has_file_name
 
+=over
+
 B<Definition:> this is fundamentally a way to see if the workbook loaded correctly
+
+=back
 
 =head3 file_creator
 
@@ -1077,7 +1109,11 @@ B<attribute methods> Methods provided to adjust this attribute
 
 =head4 creator
 
+=over
+
 B<Definition:> returns the name of the file creator
+
+=back
 
 =head3 file_date_created
 
@@ -1097,7 +1133,11 @@ B<attribute methods> Methods provided to adjust this attribute
 
 =head4 date_created
 
+=over
+
 B<Definition:> returns the date the file was created
+
+=back
 
 =head3 file_modified_by
 
@@ -1117,7 +1157,11 @@ B<attribute methods> Methods provided to adjust this attribute
 
 =head4 modified_by
 
+=over
+
 B<Definition:> returns the user name of the person who last modified the file
+
+=back
 
 =head3 file_date_modified
 
@@ -1137,7 +1181,11 @@ B<attribute methods> Methods provided to adjust this attribute
 
 =head4 date_modified
 
+=over
+
 B<Definition:> returns the date when the file was last modified
+
+=back
 
 =head3 sheet_parser
 
@@ -1156,11 +1204,19 @@ B<attribute methods> Methods provided to adjust this attribute
 
 =head4 set_parser_type
 
+=over
+
 B<Definition:> the way to change the parser type
+
+=back
 
 =head4 get_parser_type
 
+=over
+
 B<Definition:> returns the currently set parser type
+
+=back
 
 =head3 count_from_zero
 
@@ -1180,11 +1236,19 @@ B<attribute methods> Methods provided to adjust this attribute
 
 =head4 counting_from_zero
 
+=over
+
 B<Definition:> a way to check the current attribute setting
+
+=back
 
 =head4 set_count_from_zero
 
+=over
+
 B<Definition:> a way to change the current attribute setting
+
+=back
 
 =head3 file_boundary_flags
 
@@ -1207,11 +1271,19 @@ B<attribute methods> Methods provided to adjust this attribute
 
 =head4 boundary_flag_setting
 
+=over
+
 B<Definition:> a way to check the current attribute setting
+
+=back
 
 =head4 change_boundary_flag
 
+=over
+
 B<Definition:> a way to change the current attribute setting
+
+=back
 
 =head3 empty_is_end
 
@@ -1234,11 +1306,19 @@ B<attribute methods> Methods provided to adjust this attribute
 
 =head4 is_empty_the_end
 
+=over
+
 B<Definition:> a way to check the current attribute setting
+
+=back
 
 =head4 set_empty_is_end
 
+=over
+
 B<Definition:> a way to set the current attribute setting
+
+=back
 
 =head3 from_the_edge
 
@@ -1261,7 +1341,11 @@ B<attribute methods> Methods provided to adjust this attribute
 
 =head4 set_from_the_edge
 
+=over
+
 B<Definition:> a way to set the current attribute setting
+
+=back
 
 =head3 default_format_list
 
@@ -1285,11 +1369,19 @@ B<attribute methods> Methods provided to adjust this attribute
 
 =head4 get_default_format_list
 
+=over
+
 B<Definition:> a way to check the current attribute setting
+
+=back
 
 =head4 set_default_format_list
 
+=over
+
 B<Definition:> a way to set the current attribute setting
+
+=back
 
 =head3 format_string_parser
 
@@ -1308,11 +1400,19 @@ B<attribute methods> Methods provided to adjust this attribute
 
 =head4 get_format_string_parser
 
+=over
+
 B<Definition:> a way to check the current attribute setting
+
+=back
 
 =head4 set_format_string_parser
 
+=over
+
 B<Definition:> a way to set the current attribute setting
+
+=back
 
 =head3 group_return_type
 
@@ -1339,11 +1439,19 @@ B<attribute methods> Methods provided to adjust this attribute
 
 =head4 get_group_return_type
 
+=over
+
 B<Definition:> a way to check the current attribute setting
+
+=back
 
 =head4 set_group_return_type
 
+=over
+
 B<Definition:> a way to set the current attribute setting
+
+=back
 
 =head1 BUILD / INSTALL from Source
 

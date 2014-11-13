@@ -2,7 +2,7 @@ package Spreadsheet::XLSX::Reader::LibXML::LogSpace;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::LogSpace::AUTHORITY = 'cpan:JANDREW';
 }
-use version; our $VERSION = qv('v0.10.1');
+use version; our $VERSION = qv('v0.10.2');
 
 use Moose::Role;
 use Types::Standard qw(

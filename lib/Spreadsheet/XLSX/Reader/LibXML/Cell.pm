@@ -2,7 +2,7 @@ package Spreadsheet::XLSX::Reader::LibXML::Cell;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::Cell::AUTHORITY = 'cpan:JANDREW';
 }
-use version; our $VERSION = qv('v0.10.1');
+use version; our $VERSION = qv('v0.10.2');
 
 use 5.010;
 use Moose;
@@ -216,13 +216,13 @@ Spreadsheet::XLSX::Reader::LibXML::Cell - XLSX Cell data and formatting source
 
 =head1 SYNOPSIS
 
-See the SYNOPSIS in L<Spreadsheet::XLSX::Reader::LibXML>
+See the SYNOPSIS in L<Spreadsheet::XLSX::Reader::LibXML> (The Workbook level class)
     
 =head1 DESCRIPTION
 
 This is the class that contains cell data.  There are no XML parsing actions taken in the 
-background of this class.  All data has been pre-coalated/built from the L<Workbook
-|Spreadsheet::XLSX::Reader::LibXML::Workbook> class.  In general the Workbook class 
+background of this class.  All data has been pre-coalated/built from the L<Worksheet
+|Spreadsheet::XLSX::Reader::LibXML::Worksheet> class.  In general the Worksheet class 
 will populate the attributes of this class when it is generated.  If you want to use it 
 as a standalone class just fill in the L<Attributes|/Attributes> below.
 
@@ -278,28 +278,52 @@ B<attribute methods> Methods provided to adjust this attribute
 
 =head4 get_error_inst
 
+=over
+
 B<Definition:> returns this instance
+
+=back
 
 =head4 error
 
+=over
+
 B<Definition:> Used to get the most recently logged error
+
+=back
 
 =head4 set_error
 
+=over
+
 B<Definition:> used to set a new error string
+		
+=back
 
 =head4 clear_error
 
+=over
+
 B<Definition:> used to clear the current error string in this attribute
+		
+=back
 
 =head4 set_warnings
 
+=over
+
 B<Definition:> used to turn on or off real time warnings when errors are set
+		
+=back
 
 =head4 if_warn
 
+=over
+
 B<Definition:> a method mostly used to extend this package and see if warnings 
 should be emitted.
+		
+=back
 
 =head3 cell_unformatted
 
@@ -318,11 +342,19 @@ B<attribute methods> Methods provided to adjust this attribute
 
 =head4 unformatted
 
+=over
+
 B<Definition:> returns this value
+		
+=back
 
 =head4 has_unformatted
 
+=over
+
 B<Definition:> check if any value was stored in the cell
+		
+=back
 
 =head3 rich_text
 
@@ -351,11 +383,19 @@ B<attribute methods> Methods provided to adjust this attribute
 
 =head4 get_rich_text
 
+=over
+
 B<Definition:> returns the attribute value
+		
+=back
 
 =head4 has_rich_text
 
+=over
+
 B<Definition:> Indicates if the attribute has anything stored
+		
+=back
 
 =head3 cell_font
 
@@ -373,11 +413,19 @@ B<attribute methods> Methods provided to adjust this attribute
 
 =head4 get_font
 
+=over
+
 B<Definition:> returns the attribute value
+		
+=back
 
 =head4 has_font
 
+=over
+
 B<Definition:> Indicates if the attribute has anything stored
+		
+=back
 
 =head3 cell_border
 
@@ -395,11 +443,19 @@ B<attribute methods> Methods provided to adjust this attribute
 
 =head4 get_border
 
+=over
+
 B<Definition:> returns the attribute value
+		
+=back
 
 =head4 has_border
 
+=over
+
 B<Definition:> Indicates if the attribute has anything stored
+		
+=back
 
 =head3 cell_style
 
@@ -417,11 +473,19 @@ B<attribute methods> Methods provided to adjust this attribute
 
 =head4 get_style
 
+=over
+
 B<Definition:> returns the attribute value
+		
+=back
 
 =head4 has_style
 
+=over
+
 B<Definition:> Indicates if the attribute has anything stored
+		
+=back
 
 =head3 cell_fill
 
@@ -439,11 +503,19 @@ B<attribute methods> Methods provided to adjust this attribute
 
 =head4 get_fill
 
+=over
+
 B<Definition:> returns the attribute value
+		
+=back
 
 =head4 has_fill
 
+=over
+
 B<Definition:> Indicates if the attribute has anything stored
+		
+=back
 
 =head3 cell_type
 
@@ -465,11 +537,19 @@ B<attribute methods> Methods provided to adjust this attribute
 
 =head4 type
 
+=over
+
 B<Definition:> returns the attribute value
+		
+=back
 
 =head4 has_type
 
+=over
+
 B<Definition:> Indicates if the attribute has anything stored (Always true)
+		
+=back
 
 =head3 cell_encoding
 
@@ -487,11 +567,19 @@ B<attribute methods> Methods provided to adjust this attribute
 
 =head4 encoding
 
+=over
+
 B<Definition:> returns the attribute value
+		
+=back
 
 =head4 has_encoding
 
+=over
+
 B<Definition:> Indicates if the attribute has anything stored
+		
+=back
 
 =head3 cell_merge
 
@@ -511,11 +599,19 @@ B<attribute methods> Methods provided to adjust this attribute
 
 =head4 merge_range
 
+=over
+
 B<Definition:> returns the attribute value
+		
+=back
 
 =head4 is_merged
 
+=over
+
 B<Definition:> Indicates if the attribute has anything stored
+		
+=back
 
 =head3 cell_formula
 
@@ -534,11 +630,19 @@ B<attribute methods> Methods provided to adjust this attribute
 
 =head4 formula
 
+=over
+
 B<Definition:> returns the attribute value
+		
+=back
 
 =head4 has_formula
 
+=over
+
 B<Definition:> Indicates if the attribute has anything stored
+		
+=back
 
 =head3 cell_row
 
@@ -554,11 +658,19 @@ B<attribute methods> Methods provided to adjust this attribute
 
 =head4 row
 
+=over
+
 B<Definition:> returns the attribute value
+		
+=back
 
 =head4 has_row
 
+=over
+
 B<Definition:> Indicates if the attribute has anything stored
+		
+=back
 
 =head3 cell_col
 
@@ -574,11 +686,19 @@ B<attribute methods> Methods provided to adjust this attribute
 
 =head4 col
 
+=over
+
 B<Definition:> returns the attribute value
+		
+=back
 
 =head4 has_col
 
+=over
+
 B<Definition:> Indicates if the attribute has anything stored
+		
+=back
 
 =head3 r
 
@@ -592,11 +712,19 @@ B<attribute methods> Methods provided to adjust this attribute
 
 =head4 cell_id
 
+=over
+
 B<Definition:> returns the attribute value
+		
+=back
 
 =head4 has_cell_id
 
+=over
+
 B<Definition:> Indicates if the attribute has anything stored
+		
+=back
 
 =head3 cell_hyperlink
 
@@ -610,11 +738,19 @@ B<attribute methods> Methods provided to adjust this attribute
 
 =head4 get_hyperlink
 
+=over
+
 B<Definition:> returns the attribute value
+		
+=back
 
 =head4 has_hyperlink
 
+=over
+
 B<Definition:> Indicates if the attribute has anything stored
+		
+=back
 
 =head3 cell_coercion
 
@@ -637,23 +773,43 @@ B<attribute methods> Methods provided to adjust this attribute
 
 =head4 get_coercion
 
+=over
+
 B<Definition:> returns this instance
+		
+=back
 
 =head4 clear_coercion
 
+=over
+
 B<Definition:> used to clear the this attribute
+		
+=back
 
 =head4 set_coercion
 
+=over
+
 B<Definition:> used to set a new coercion instance
+		
+=back
 
 =head4 has_coercion
 
+=over
+
 B<Definition:> Indicate if any coecion code is applied
+		
+=back
 
 =head4 coercion_name
 
+=over
+
 B<Definition:> calls 'display_name' on the code in the background
+		
+=back
 
 =head1 SUPPORT
 

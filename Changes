@@ -34,3 +34,7 @@ v0.10.1   2014-11-13 05:37:32-08:00 America/Los_Angeles
 	+ Completed the CellToColumnRow POD
 	+ Another (but not final0 proofread of the Spreadsheet::XLSX::Reader::LibXML POD
 	+ Release with a Beta rev to try and Index on MetaCPAN
+
+v0.10.2   2014-11-13 10:29:27-08:00 America/Los_Angeles
+
+	+ Fixed and updated the POD based on a MetaCPAN read

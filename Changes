@@ -38,3 +38,14 @@ v0.10.1   2014-11-13 05:37:32-08:00 America/Los_Angeles
 v0.10.2   2014-11-13 10:29:27-08:00 America/Los_Angeles
 
 	+ Fixed and updated the POD based on a MetaCPAN read
+
+v0.10.4   2014-11-16 09:35:36-08:00 America/Los_Angeles
+
+	+ Improved CellToColumnRow POD
+	+ Improved the top level POD
+	+ Improved the Worksheet POD
+	! Removed the SVPerlTalk.odp from the package (as bloat)
+		Look in the github repository if you want to review it
+	+ Added a new POD file for the SharedStrings class (to be universal across Reader and DOM)
+	+ Added a new POD file for the Styles class (to be universal across Reader and DOM)
+	+ Added a new POD file for the CalcChain class (to be universal across Reader and DOM)

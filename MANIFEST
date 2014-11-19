@@ -43,9 +43,11 @@ t/Spreadsheet/XLSX/Reader/LibXML/XMLReader/02-worksheet.t
 t/Spreadsheet/XLSX/Reader/LibXML/XMLReader/03-sharedstrings.t
 t/Spreadsheet/XLSX/Reader/LibXML/XMLReader/04-calcchain.t
 t/Spreadsheet/XLSX/Reader/LibXML/XMLReader/05-styles.t
+t/Spreadsheet/XLSX/Reader/LibXML/XMLReader/calcchain_example.pl
 t/Spreadsheet/XLSX/Reader/LibXML/cell_to_column_row_example.pl
 t/Spreadsheet/XLSX/Reader/LibXML/error_example.pl
-t/Spreadsheet/XLSX/Reader/libxml_exampl.pl
+t/Spreadsheet/XLSX/Reader/LibXML/fmt_default_example.pl
+t/Spreadsheet/XLSX/Reader/libxml_example.pl
 t/test_files/Rich.xls
 t/test_files/TestBook.xls
 t/test_files/TestBook.xlsx

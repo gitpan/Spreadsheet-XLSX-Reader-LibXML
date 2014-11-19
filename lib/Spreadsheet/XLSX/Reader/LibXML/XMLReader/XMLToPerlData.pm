@@ -2,7 +2,7 @@ package Spreadsheet::XLSX::Reader::LibXML::XMLReader::XMLToPerlData;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::XMLReader::XMLToPerlData::AUTHORITY = 'cpan:JANDREW';
 }
-use version; our $VERSION = qv('v0.10.4');
+use version; our $VERSION = qv('v0.10.6');
 
 use	Moose::Role;
 use 5.010;
@@ -135,10 +135,10 @@ sub parse_element{
 		###LogSD		'..ref count: ' .  scalar( @$list_ref ),
 		###LogSD		'or Hash ref:', $hash_ref,
 		###LogSD		'..hash ref values count: ' . scalar( values( %$hash_ref ) ),] );
-		if( $current_ref and ( keys $current_ref )[0] eq 'count' ){
+		if( $current_ref and ( keys %$current_ref )[0] eq 'count' ){
 			$current_ref->{list} = $list_ref;
 		}elsif( scalar( @$list_ref ) == scalar( values( %$hash_ref ) ) ){
-			@$current_ref{ keys %$hash_ref } = ( values( %$hash_ref ) );
+			@$current_ref{ keys( %$hash_ref ) } = ( values( %$hash_ref ) );
 		}else{
 			$current_ref->{list} = $list_ref;
 		}

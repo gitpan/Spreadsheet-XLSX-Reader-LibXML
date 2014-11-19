@@ -2,7 +2,7 @@ package Spreadsheet::XLSX::Reader::LibXML::GetCell;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::GetCell::AUTHORITY = 'cpan:JANDREW';
 }
-use version; our $VERSION = qv('v0.10.4');
+use version; our $VERSION = qv('v0.10.6');
 
 use	Moose::Role;
 requires qw(

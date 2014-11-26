@@ -2,7 +2,7 @@ package Spreadsheet::XLSX::Reader::LibXML::UtilFunctions;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::UtilFunctions::AUTHORITY = 'cpan:JANDREW';
 }
-use version; our $VERSION = qv('v0.10.6');
+use version; our $VERSION = qv('v0.12.4');
 
 use	5.010;
 use	Moose::Role;

@@ -2,7 +2,7 @@ package Spreadsheet::XLSX::Reader::LibXML::CellToColumnRow;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::CellToColumnRow::AUTHORITY = 'cpan:JANDREW';
 }
-use version; our $VERSION = qv('v0.12.4');
+use version; our $VERSION = qv('v0.14.2');
 
 use	Moose::Role;
 requires qw(

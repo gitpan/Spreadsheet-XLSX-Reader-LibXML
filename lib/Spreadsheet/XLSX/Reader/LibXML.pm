@@ -2,9 +2,10 @@ package Spreadsheet::XLSX::Reader::LibXML;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::AUTHORITY = 'cpan:JANDREW';
 }
-use version 0.77; our $VERSION = qv('v0.14.2');
+use version 0.77; our $VERSION = qv('v0.16.2');
 
 use 5.010;
+use	List::Util 1.33;
 use	Moose;
 use	MooseX::StrictConstructor;
 use	MooseX::HasDefaults::RO;
@@ -783,11 +784,11 @@ As such it is designed to be (fairly) extensible by writing roles and adding the
 package rather than requiring that you extend the package to some new branch.  Read the full 
 documentation for all opportunities!
 
-On the other hand, L<XML::LibXML> has multiple ways to read an XML file but this release only 
-has an L<XML::LibXML::Reader> parser option.  Future iterations could include a DOM parser 
-option.  Additionally this package does not (yet) provide the same access to the formatting 
-elements provided in L<Spreadsheet::ParseExcel>.  That is on the longish and incomplete TODO 
-list.
+In the realm of extensibility, L<XML::LibXML> has multiple ways to read an XML file but this 
+release only has an L<XML::LibXML::Reader> parser option.  Future iterations could include a 
+DOM parser option.  Additionally this package does not (yet) provide the same access to the 
+formatting elements provided in L<Spreadsheet::ParseExcel>.  That is on the longish and 
+incomplete TODO list.
 
 The package operates on the workbook with three primary tiers of classes.  All other classes 
 in this package are for architectual extensibility.
@@ -817,7 +818,8 @@ These are the primary ways to use this class.  They can be used to open an .xlsx
 workbook.  They are also ways to investigate information at the workbook level.  For 
 information on how to retrieve data from the worksheets see the 
 L<Worksheet|Spreadsheet::XLSX::Reader::LibXML::Worksheet> documentation.  For additional 
-workbook options see the L<Attributes|/Attributes> section.
+workbook options see the L<Attributes|/Attributes> section.  The attributes section also 
+documents all the methods used to adjust the attributes of this class.
 
 =head3 new( %attributes )
 
@@ -1506,12 +1508,12 @@ B<Definition:> a way to set the current attribute setting
 
 =head1 BUILD / INSTALL from Source
 
-B<1.> Ensure that you have the libxml2 and libxml2-dev libraries installed using 
+B<1.> Ensure that you have the libxml2 B<and libxml2-dev> libraries installed using 
 your favorite package installer
 
-http://xmlsoft.org/
+L<http://xmlsoft.org/>
 	
-B<2.> Download a compressed file with the code
+B<2.> Download a compressed file with the code from your favorite source
 	
 B<3.> Extract the code from the compressed file.  If you are using tar this should work:
 

@@ -2,7 +2,7 @@ package Spreadsheet::XLSX::Reader::LibXML::FmtDefault;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::FmtDefault::AUTHORITY = 'cpan:JANDREW';
 }
-use version; our $VERSION = qv('v0.14.2');
+use version; our $VERSION = qv('v0.16.2');
 
 use	5.010;
 use	Moose::Role;
@@ -151,10 +151,10 @@ conversion out should be from unicode to your L<target_encoding|/target_encoding
 L<For now|/TODO> no encoding (output) conversion is actually provided and the function is 
 essentially a pass-through of standard perl unicode.
 
-=head2 Requires
+=head2 requires
 
-These are methods used by the Role but not provided by the role.  Any class consuming this 
-role will not build without these methods provided by the class prior to loading this role.
+These are method(s) used by this Role but not provided by the role.  Any class consuming this 
+role will not build without first providing these methods prior to loading this role.
 
 =head3 get_log_space
 
@@ -167,7 +167,7 @@ L<Log::Shiras||https://github.com/jandrew/Log-Shiras> for more information.
 	
 =head2 Primary Methods
 
-These are the primary ways to use this class.  For additional FmtDefault options see the 
+These are the primary ways to use this Role.  For additional FmtDefault options see the 
 L<Attributes|/Attributes> section.
 
 =head3 change_output_encoding( $string )
@@ -326,7 +326,10 @@ L<github Spreadsheet::XLSX::Reader::LibXML/issues
 =over
 
 B<1.> Actually make the L<change_output_encoding|/change_output_encoding> method do 
-something usefull.
+something useful.
+
+B<2.> Add more roles like this for othere regions and allow them to be selected 
+by a region attribute setting in L<Spreadsheet::XLSX::Reader::LibXML>
 
 =back
 
@@ -354,7 +357,15 @@ This software is copyrighted (c) 2014 by Jed Lund
 
 =over
 
-L<Spreadsheet::XLSX::Reader::LibXML>
+L<version>
+
+B<5.010> -(L<perl>)
+
+L<Moose::Role>
+
+L<Types::Standard> - InstanceOf ArrayRef Str
+
+L<lib>
 
 =back
 

@@ -2,7 +2,7 @@ package Spreadsheet::XLSX::Reader::LibXML::Types;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::Types::AUTHORITY = 'cpan:JANDREW';
 }
-use version; our $VERSION = qv('v0.16.2');
+use version; our $VERSION = qv('v0.18.2');
 		
 use strict;
 use warnings;

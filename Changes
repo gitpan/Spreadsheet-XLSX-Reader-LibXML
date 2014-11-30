@@ -79,4 +79,9 @@ v0.16.2   2014-11-29 16:43:29-08:00 America/Los_Angeles
 
 	+ Some tweaks to the LibXML POD
 	! Another re-write of the ParseExcelFormatStrings.pm to try and fix CPAN Testers fails
+
+v0.18.2   2014-11-30 13:54:00-08:00 America/Los_Angeles
+
+	! Although the last update had more passes on CPAN testers this is another update 
+		attempting to reach 100% pass rate
 	

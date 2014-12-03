@@ -2,7 +2,7 @@ package Spreadsheet::XLSX::Reader::LibXML::FmtDefault;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::FmtDefault::AUTHORITY = 'cpan:JANDREW';
 }
-use version; our $VERSION = qv('v0.18.2');
+use version; our $VERSION = qv('v0.20.4');
 
 use	5.010;
 use	Moose::Role;
@@ -136,6 +136,12 @@ Spreadsheet::XLSX::Reader::LibXML::FmtDefault - Default xlsx number formats and 
     
 =head1 DESCRIPTION
 
+B<This documentation is written to explain ways to extend this package.  To use the data 
+extraction of Excel workbooks, worksheets, and cells please review the documentation for  
+L<Spreadsheet::XLSX::Reader::LibXML>,
+L<Spreadsheet::XLSX::Reader::LibXML::Worksheet>, and 
+L<Spreadsheet::XLSX::Reader::LibXML::Cell>>
+
 This L<Moose Role|Moose::Manual::Roles> is the primary tool for localization.  It stores the 
 number conversion format strings for the set region.  In this particular case it is the base 
 L<english conversion
@@ -151,6 +157,11 @@ conversion out should be from unicode to your L<target_encoding|/target_encoding
 L<For now|/TODO> no encoding (output) conversion is actually provided and the function is 
 essentially a pass-through of standard perl unicode.
 
+To replace this module just build a L<Moose::Role|Moose::Manual::Roles> that has the following 
+L<Primary Methods|/Primary Methods> and L<Attributes|/Attributes>.  Then set the 
+L<default_format_list|Spreadsheet::XLSX::Reader::LibXML/default_format_list> attribute with 
+the new role name when initially starting L<Spreadsheet::XLSX::Reader::LibXML>.
+
 =head2 requires
 
 These are method(s) used by this Role but not provided by the role.  Any class consuming this 
@@ -161,7 +172,7 @@ role will not build without first providing these methods prior to loading this 
 =over
 
 B<Definition:> Used to return the log space used by the code protected by ###LogSD.  See
-L<Log::Shiras||https://github.com/jandrew/Log-Shiras> for more information.
+L<Log::Shiras|https://github.com/jandrew/Log-Shiras> for more information.
 
 =back
 	
@@ -175,11 +186,12 @@ L<Attributes|/Attributes> section.
 =over
 
 B<Definition:> Currently this is a placeholder that is always called by the L<Worksheet
-|Spreadsheet::XLSX::Reader::Worksheet> when a cell value is retreived in order to allow 
-for I<future> encoding adjustments on the way out.  See L<XML::LibXML> for an explanation 
-of how the encoding in is handled.  This conversion is done prior to any number formatting.  
-If you are replacing this role you need to have the function and you can use it to mangle 
-your output string any way you want.
+|Spreadsheet::XLSX::Reader::LibXML::Worksheet> when a cell value is retreived in order to allow 
+for I<future> encoding adjustments on the way out.  See 
+L<XML::LibXML/ENCODINGS SUPPORT IN XML::LIBXML> for an explanation of how the input encoding 
+is handled.  This conversion out is done prior to any number formatting.  If you are replacing 
+this role you need to have the function and you can use it to mangle your output string any 
+way you want.
 
 B<Accepts:> a unicode string
 
@@ -235,9 +247,9 @@ B<Returns:> an array ref of all pre-defined format strings
 
 B<Definition:> If you don't want to re-write this role you can just set a new 
 array ref of format strings that you want excel to use.  The strings need to comply with 
-the capabilities of L<Spreadsheet::XLSX::Reader:LibXML::ParseExcelFormatStrings>.  With 
+the capabilities of L<Spreadsheet::XLSX::Reader::LibXML::ParseExcelFormatStrings>.  With 
 any luck means they comply with the Excel L<format string definitions
-|http://office.microsoft.com/en-us/excel-help/create-or-delete-a-custom-number-format-HP005199500.aspx>.  
+|https://support.office.com/en-us/article/Create-or-delete-a-custom-number-format-83657ca7-9dbe-4ee5-9c89-d8bf836e028e?ui=en-US&rs=en-US&ad=US>.  
 This role is used in the L<Styles|Spreadsheet::XLSX::Reader::LibXML::Styles> class but 
 I<this method is actually exposed all the way up to the L<Workbook
 |Spreadsheet::XLSX::Reader::LibXML> class through L<Delegation|Moose::Manual::Delegation>.>
@@ -252,7 +264,8 @@ B<Returns:> nothing
 
 Data passed to new when creating the L<Styles|Spreadsheet::XLSX::Reader::LibXML::Styles> 
 instance.   For modification of these attributes see the listed 'attribute methods'.
-For more information on attributes see L<Moose::Manual::Attributes>.
+For more information on attributes see L<Moose::Manual::Attributes>.  Most of these are 
+not exposed to the top level of L<Spreadsheet::XLSX::Reader::LibXML>.
 
 =head3 excel_region
 
@@ -266,7 +279,7 @@ B<attribute methods> Methods provided to adjust this attribute
 		
 =over
 
-=B<get_excel_region>
+B<get_excel_region>
 
 =over
 
@@ -292,7 +305,7 @@ B<attribute methods> Methods provided to adjust this attribute
 		
 =over
 
-=B<set_target_encoding( $encoding )>
+B<set_target_encoding( $encoding )>
 
 =over
 
@@ -300,7 +313,7 @@ B<Definition:> Changing this won't affect anything
 
 =back
 
-=B<get_target_encoding>
+B<get_target_encoding>
 
 =over
 
@@ -359,11 +372,11 @@ This software is copyrighted (c) 2014 by Jed Lund
 
 L<version>
 
-B<5.010> -(L<perl>)
+L<perl 5.010|perl/5.10.0>
 
 L<Moose::Role>
 
-L<Types::Standard> - InstanceOf ArrayRef Str
+L<Types::Standard>
 
 L<lib>
 

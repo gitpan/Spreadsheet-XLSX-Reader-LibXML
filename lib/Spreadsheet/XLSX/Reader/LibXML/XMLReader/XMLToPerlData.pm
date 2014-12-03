@@ -2,7 +2,7 @@ package Spreadsheet::XLSX::Reader::LibXML::XMLReader::XMLToPerlData;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::XMLReader::XMLToPerlData::AUTHORITY = 'cpan:JANDREW';
 }
-use version; our $VERSION = qv('v0.18.2');
+use version; our $VERSION = qv('v0.20.4');
 
 use	Moose::Role;
 use 5.010;
@@ -170,6 +170,12 @@ Spreadsheet::XLSX::Reader::LibXML::XMLReader::XMLToPerlData -
 Helper to turn xlsx XML to perl hashs
     
 =head1 DESCRIPTION
+
+B<This documentation is written to explain ways to extend this package.  To use the data 
+extraction of Excel workbooks, worksheets, and cells please review the documentation for  
+L<Spreadsheet::XLSX::Reader::LibXML>,
+L<Spreadsheet::XLSX::Reader::LibXML::Worksheet>, and 
+L<Spreadsheet::XLSX::Reader::LibXML::Cell>>
 
 POD not written yet!
 

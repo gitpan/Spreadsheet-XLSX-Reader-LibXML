@@ -2,7 +2,7 @@ package Spreadsheet::XLSX::Reader::LibXML;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::AUTHORITY = 'cpan:JANDREW';
 }
-use version 0.77; our $VERSION = qv('v0.18.2');
+use version 0.77; our $VERSION = qv('v0.20.4');
 
 use 5.010;
 use	List::Util 1.33;
@@ -295,7 +295,9 @@ has _styles_instance =>(
 		clearer		=> '_clear_styles',
 		predicate	=> '_has_styles_file',
 		handles		=>[qw(
-			get_format_position	set_defined_excel_format_list change_output_encoding
+			get_format_position			set_defined_excel_format_list
+			change_output_encoding		get_date_behavior
+			set_date_behavior
 		) ],
 	);
 
@@ -778,7 +780,7 @@ You could combine both steps by calling new with the 'file_name' attribute calle
 Afterward it is still possible to call ->error on the instance.  Another improvement 
 (From my perspective) is date handling.  This package allows for a simple pluggable custom 
 output format that is more flexible than other options as well as handling dates older than 
-1-January-1900.  I leveraged coercions from L<Type::Coercion> to do this but anything that 
+1-January-1900.  I leveraged coercions from L<Type::Tiny> to do this but anything that 
 follows that general format will work here.  Additionally, this is a L<Moose> based package.  
 As such it is designed to be (fairly) extensible by writing roles and adding them to this 
 package rather than requiring that you extend the package to some new branch.  Read the full 
@@ -827,7 +829,7 @@ documents all the methods used to adjust the attributes of this class.
 
 B<Definition:> This is the way to instantiate an instance of this class.  It can 
 accept all the L<Attributes|/Attributes>, some, or none.  If the instance is started with 
-no arguments then the L<Methods|/Methods> are needed to open the xlsx file.
+no arguments then a L<method|/parse( $file_name, $formatter )> is needed to open the xlsx file.
 
 B<Accepts:> the L<Attributes|/Attributes>
 
@@ -1508,7 +1510,7 @@ B<Definition:> a way to set the current attribute setting
 
 =head1 BUILD / INSTALL from Source
 
-B<1.> Ensure that you have the libxml2 B<and libxml2-dev> libraries installed using 
+B<1.> Ensure that you have the libxml2 B<and libxml2-devel> libraries installed using 
 your favorite package installer
 
 L<http://xmlsoft.org/>
@@ -1559,7 +1561,11 @@ B<1.> Build L<Alien::LibXML::Devel> to load the libxml2-devel libraries from sou
 require that and L<Alien::LibXML> in the build file. So all needed requirements for L<XML::LibXML> 
 are met
 
-This includes the libxml2 and libxml2-dev libraries
+=over
+
+Both libxml2 and libxml2-devel libraries are required for XML::LibXML
+
+=back
 
 B<2.> Add a pivot table reader (Not just read the values from the sheet)
 
@@ -1569,7 +1575,11 @@ B<4.> Add more exposure to workbook formatting methods
 
 B<5.> Build a DOM parser alternative for the sheets
 
+=over
+
 (Theoretically faster than the reader but uses more memory)
+
+=back
 
 =back
 
@@ -1597,7 +1607,7 @@ This software is copyrighted (c) 2014 by Jed Lund
 
 =over
 
-B<5.010> - (L<perl>)
+L<perl 5.010|perl/5.10.0>
 
 L<version>
 
@@ -1617,7 +1627,7 @@ L<Type::Tiny> - 0.046
 
 L<MooseX::ShortCut::BuildInstance> - 1.026
 
-L<Carp>- cluck
+L<Carp>
 
 L<XML::LibXML>
 

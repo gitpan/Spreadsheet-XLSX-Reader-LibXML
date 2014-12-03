@@ -2,7 +2,7 @@ package Spreadsheet::XLSX::Reader::LibXML::XMLReader::SharedStrings;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::XMLReader::SharedStrings::AUTHORITY = 'cpan:JANDREW';
 }
-use version; our $VERSION = qv('v0.18.2');
+use version; our $VERSION = qv('v0.20.4');
 
 use 5.010;
 use Moose;
@@ -169,6 +169,12 @@ __END__
 Spreadsheet::XLSX::Reader::XMLReader::SharedStrings - sharedStrings parsing with XML::LibXML::Reader
     
 =head1 DESCRIPTION
+
+B<This documentation is written to explain ways to extend this package.  To use the data 
+extraction of Excel workbooks, worksheets, and cells please review the documentation for  
+L<Spreadsheet::XLSX::Reader::LibXML>,
+L<Spreadsheet::XLSX::Reader::LibXML::Worksheet>, and 
+L<Spreadsheet::XLSX::Reader::LibXML::Cell>>
 
 POD not written yet!
 

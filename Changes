@@ -84,4 +84,15 @@ v0.18.2   2014-11-30 13:54:00-08:00 America/Los_Angeles
 
 	! Although the last update had more passes on CPAN testers this is another update 
 		attempting to reach 100% pass rate
-	
+
+v0.20.2   2014-12-02 12:56:46-08:00 America/Los_Angeles
+
+	+ Finished the POD for ParseExcelFormatStrings.pm
+	+ Merged UtilFunctions with ParseExcelFormatStrings since there was no reason 
+		for them to be separate
+	+ Improved the POD for GetCell.pm
+	+ made the methods for clearing the row reading start and end column definitions public
+
+v0.20.4   2014-12-03 13:27:23-08:00 America/Los_Angeles
+
+	+ A round of POD scrubbing for POD completed to this point

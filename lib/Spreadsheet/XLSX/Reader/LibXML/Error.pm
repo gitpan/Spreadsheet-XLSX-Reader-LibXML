@@ -2,7 +2,7 @@ package Spreadsheet::XLSX::Reader::LibXML::Error;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::Error::AUTHORITY = 'cpan:JANDREW';
 }
-use version; our $VERSION = qv('v0.18.2');
+use version; our $VERSION = qv('v0.20.4');
 
 use Moose;
 use Carp qw( cluck );
@@ -118,6 +118,12 @@ Spreadsheet::XLSX::Reader::LibXML::Error - Moose class for remembering the last 
     ##############################################################################
     
 =head1 DESCRIPTION
+
+B<This documentation is written to explain ways to extend this package.  To use the data 
+extraction of Excel workbooks, worksheets, and cells please review the documentation for  
+L<Spreadsheet::XLSX::Reader::LibXML>,
+L<Spreadsheet::XLSX::Reader::LibXML::Worksheet>, and 
+L<Spreadsheet::XLSX::Reader::LibXML::Cell>>
 
 This L<Moose> class contains two L<attributes|Moose::Manual::Attributes>.  It is intended 
 to be used through (by) L<delegation|Moose::Manual::Delegation> in other classes.  The first 
@@ -257,7 +263,7 @@ L<version>
 
 L<Moose>
 
-L<Carp> - cluck
+L<Carp>
 
 L<MooseX::StrictConstructor>
 

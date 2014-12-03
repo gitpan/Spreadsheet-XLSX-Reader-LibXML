@@ -2,7 +2,7 @@ package Spreadsheet::XLSX::Reader::LibXML::XMLReader::CalcChain;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::XMLReader::CalcChain::AUTHORITY = 'cpan:JANDREW';
 }
-use version; our $VERSION = qv('v0.18.2');
+use version; our $VERSION = qv('v0.20.4');
 
 use 5.010;
 use Moose;
@@ -98,18 +98,24 @@ Spreadsheet::XLSX::Reader::LibXML::XMLReader::CalcChain - LibXML::XMLReader for 
 
 =head1 SYNOPSIS
 
-See General SYNOPSIS L<Spreadsheet::XLSX::Reader::LibXML::CalcChain/SYNOPSIS>
+See General  L<SYNOPSIS|Spreadsheet::XLSX::Reader::LibXML::CalcChain/SYNOPSIS>
     
 =head1 DESCRIPTION
+
+B<This documentation is written to explain ways to extend this package.  To use the data 
+extraction of Excel workbooks, worksheets, and cells please review the documentation for  
+L<Spreadsheet::XLSX::Reader::LibXML>,
+L<Spreadsheet::XLSX::Reader::LibXML::Worksheet>, and 
+L<Spreadsheet::XLSX::Reader::LibXML::Cell>>
 
 This class is used to access the sub file calcChain.xml from an unzipped .xlsx file.  
 The file to be read is generally found in the xl/ sub folder after the master file is 
 unzipped.  The calcChain.xml file contains the calculation sequence and data source(s) 
 used when building the value for cells with formulas.  (The formula presented in the 
 L<Cell|Spreadsheet::XlSX::Reader::LibXML::Cell> instance is collected from somewhere 
-else.
+else.)
 
-This particular class uses the L<XML::LibXML::XMLReader> to parse the file.  The 
+This particular class uses the L<XML::LibXML::Reader> to parse the file.  The 
 intent with that reader is to maintain the minimum amount of the file in working memory.  
 As a consequence two things are sacrificed.  First this implementation will read the file 
 serially.  This means that to read a previous element the file must start over at the 
@@ -196,13 +202,13 @@ This software is copyrighted (c) 2014 by Jed Lund
 
 L<version>
 
-B<5.010> - (L<perl>)
+L<perl 5.010|perl/5.10.0>
 
 L<Moose>
 
 L<MooseX::StrictConstructor>
 
-L<MooseX::HasDefaults::RO>
+L<MooseX::HasDefaults>
 
 L<lib>
 

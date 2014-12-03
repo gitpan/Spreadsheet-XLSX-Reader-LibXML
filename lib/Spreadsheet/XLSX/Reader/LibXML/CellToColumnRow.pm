@@ -2,7 +2,7 @@ package Spreadsheet::XLSX::Reader::LibXML::CellToColumnRow;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::CellToColumnRow::AUTHORITY = 'cpan:JANDREW';
 }
-use version; our $VERSION = qv('v0.18.2');
+use version; our $VERSION = qv('v0.20.4');
 
 use	Moose::Role;
 requires qw(
@@ -225,6 +225,12 @@ Spreadsheet::XLSX::Reader::LibXML::CellToColumnRow - Translate Excel cell IDs to
     
 =head1 DESCRIPTION
 
+B<This documentation is written to explain ways to extend this package.  To use the data 
+extraction of Excel workbooks, worksheets, and cells please review the documentation for  
+L<Spreadsheet::XLSX::Reader::LibXML>,
+L<Spreadsheet::XLSX::Reader::LibXML::Worksheet>, and 
+L<Spreadsheet::XLSX::Reader::LibXML::Cell>>
+
 This is a L<Moose Role|Moose::Manual::Roles>. The role provides methods to convert back 
 and forth betwee Excel Cell ID and column row numbers.  The role also provides a layer 
 of abstraction so that it is possible to implement 
@@ -250,7 +256,7 @@ role will not build unless it first provides these methods prior to loading this
 =over
 
 B<Definition:> Used to return the log space used by the code protected by ###LogSD.  See
-L<Log::Shiras||https://github.com/jandrew/Log-Shiras> for more information.
+L<Log::Shiras|https://github.com/jandrew/Log-Shiras> for more information.
 
 =back
 

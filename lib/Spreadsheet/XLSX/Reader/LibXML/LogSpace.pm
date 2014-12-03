@@ -2,7 +2,7 @@ package Spreadsheet::XLSX::Reader::LibXML::LogSpace;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::LogSpace::AUTHORITY = 'cpan:JANDREW';
 }
-use version; our $VERSION = qv('v0.18.2');
+use version; our $VERSION = qv('v0.20.4');
 
 use Moose::Role;
 use Types::Standard qw(
@@ -58,6 +58,12 @@ Spreadsheet::XLSX::Reader::LibXML::LogSpace - Role to manage logging name space
 
 =head1 DESCRIPTION
 
+B<This documentation is written to explain ways to extend this package.  To use the data 
+extraction of Excel workbooks, worksheets, and cells please review the documentation for  
+L<Spreadsheet::XLSX::Reader::LibXML>,
+L<Spreadsheet::XLSX::Reader::LibXML::Worksheet>, and 
+L<Spreadsheet::XLSX::Reader::LibXML::Cell>>
+
 Normally the attribute justs belong in the package but it is nice to have in a 
 pluggable role for sub unit testing.
 
@@ -70,7 +76,7 @@ pluggable role for sub unit testing.
 =head2 Attributes
 
 Data passed to new when creating an instance of the consuming class.  For modification of 
-these attributes see the listed L</Methods>.
+these attributes see the listed L<Methods|/Methods>.
 
 =head3 log_space
 
@@ -114,7 +120,8 @@ L<github Spreadsheet::XLSX::Reader::LibXML/issues
 
 =over
 
-B<1.> Nothing L<yet|/SUPPORT>
+B<1.> Make this not even load for the package if 
+L<Log::Shiras|https://github.com/jandrew/Log-Shiras> qw( :debug ) is not enabled
 
 =back
 

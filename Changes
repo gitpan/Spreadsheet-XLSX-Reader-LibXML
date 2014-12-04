@@ -96,3 +96,12 @@ v0.20.2   2014-12-02 12:56:46-08:00 America/Los_Angeles
 v0.20.4   2014-12-03 13:27:23-08:00 America/Los_Angeles
 
 	+ A round of POD scrubbing for POD completed to this point
+
+v0.22.2   2014-12-04 15:46:15-08:00 America/Los_Angeles
+
+	! Fixed a bug in the error reporting for the value method in the cell
+	! Fixed a bug where the sheet position wasn't set correctly when calling for worksheet generation by name
+		added a test file for this case
+	! Improved temp dir cleanup in error situations - with less code
+		this inclues a new explicit DEMOLISH at the cell level
+	

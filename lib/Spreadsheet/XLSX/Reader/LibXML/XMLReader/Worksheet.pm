@@ -2,7 +2,7 @@ package Spreadsheet::XLSX::Reader::LibXML::XMLReader::Worksheet;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::XMLReader::Worksheet::AUTHORITY = 'cpan:JANDREW';
 }
-use version; our $VERSION = qv('v0.20.4');
+use version; our $VERSION = qv('v0.22.2');
 
 
 use	5.010;
@@ -47,7 +47,7 @@ has sheet_position =>(# XML position
 
 has sheet_name =>(
 		isa		=> Str,
-		reader	=> 'name',
+		reader	=> 'get_name',
 	);
 
 has workbook_instance =>(

@@ -2,7 +2,7 @@ package Spreadsheet::XLSX::Reader::LibXML::XMLReader::XMLToPerlData;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::XMLReader::XMLToPerlData::AUTHORITY = 'cpan:JANDREW';
 }
-use version; our $VERSION = qv('v0.22.2');
+use version; our $VERSION = qv('v0.24.2');
 
 use	Moose::Role;
 use 5.010;
@@ -58,6 +58,7 @@ sub parse_element{
 		###LogSD		".. at byte position: " . $self->byte_consumed, ] );
 	}
 	my $node_text;
+	# Figure out how to get rid of this
 	$node_text = $self->inner_xml;
 	if( defined( $node_text ) and length( $node_text ) > 0 and $node_text !~ /^</ ){
 		$current_ref->{raw_text} = $node_text;
@@ -146,6 +147,16 @@ sub parse_element{
 		###LogSD	$phone->talk( level => 'info', message => [
 		###LogSD		"No node list to process",] );
 		$current_ref = 1;
+	}
+	# Handle empty string values
+	if(	ref $current_ref and
+		(!exists $current_ref->{t} or $current_ref->{t} eq 'str') and
+		exists $current_ref->{v} and
+		$current_ref->{v} == 1			){
+		###LogSD	$phone->talk( level => 'debug', message => [
+		###LogSD		"Identified an empty string" ] );
+		$current_ref->{v} = {raw_text => ''};
+		delete $current_ref->{t};
 	}
 	###LogSD	$phone->talk( level => 'debug', message => [
 	###LogSD		"Returning ref: ", $current_ref ] );

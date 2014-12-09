@@ -2,7 +2,7 @@ package Spreadsheet::XLSX::Reader::LibXML::Types;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::Types::AUTHORITY = 'cpan:JANDREW';
 }
-use version; our $VERSION = qv('v0.22.2');
+use version; our $VERSION = qv('v0.24.2');
 		
 use strict;
 use warnings;
@@ -68,7 +68,7 @@ declare XLSXFile,
     };
 
 declare ParserType, 
-	as Enum[qw( dom reader sax )];
+	as Enum[qw( reader )];#dom  sax
 
 coerce ParserType,
 	from Str,

@@ -2,7 +2,7 @@ package Spreadsheet::XLSX::Reader::LibXML::Cell;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::Cell::AUTHORITY = 'cpan:JANDREW';
 }
-use version; our $VERSION = qv('v0.22.2');
+use version; our $VERSION = qv('v0.24.2');
 #~ use Data::Dumper;
 $| = 1;
 use 5.010;
@@ -192,7 +192,8 @@ sub value{
 	$formatted =~ s/\\//g if $formatted;
 	###LogSD	$phone->talk( level => 'debug', message => [
 	###LogSD		"Format is:", $self->coercion_name,
-	###LogSD		"Returning the formated value: " . $formatted ] );
+	###LogSD		"Returning the formated value: " . 
+	###LogSD		( $formatted ? $formatted : '' ), ] );
 	return $formatted;
 }
 

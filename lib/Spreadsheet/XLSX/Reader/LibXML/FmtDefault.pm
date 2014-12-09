@@ -2,7 +2,7 @@ package Spreadsheet::XLSX::Reader::LibXML::FmtDefault;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::FmtDefault::AUTHORITY = 'cpan:JANDREW';
 }
-use version; our $VERSION = qv('v0.22.2');
+use version; our $VERSION = qv('v0.24.2');
 
 use	5.010;
 use	Moose::Role;

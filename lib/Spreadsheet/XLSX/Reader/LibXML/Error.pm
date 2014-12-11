@@ -2,7 +2,7 @@ package Spreadsheet::XLSX::Reader::LibXML::Error;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::Error::AUTHORITY = 'cpan:JANDREW';
 }
-use version; our $VERSION = qv('v0.24.2');
+use version; our $VERSION = qv('v0.26.2');
 
 use Moose;
 use Carp qw( cluck );

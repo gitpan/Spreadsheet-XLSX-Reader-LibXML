@@ -2,7 +2,7 @@ package Spreadsheet::XLSX::Reader::LibXML;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::AUTHORITY = 'cpan:JANDREW';
 }
-use version 0.77; our $VERSION = qv('v0.24.2');
+use version 0.77; our $VERSION = qv('v0.26.2');
 
 use 5.010;
 use	List::Util 1.33;
@@ -13,8 +13,6 @@ use	Carp qw( confess );
 use	Archive::Zip;
 use	OLE::Storage_Lite;
 use	File::Temp;
-#~ $File::Temp::DEBUG = 1;
-#~ use	Data::Dumper;
 use Types::Standard qw(
  		InstanceOf			Str       		StrMatch
 		Enum				HashRef			ArrayRef
@@ -400,7 +398,7 @@ sub _build_file{
 		$message = "There is nothing in the file -$file_name-";
 	}
 	if( $message ){
-		$self->_set_error( $message );
+		$self->set_error( $message );
 		$self->_clear_file_name;
 		return;
 	}
@@ -419,7 +417,7 @@ sub _build_file{
     # Read the XLSX zip file and catch any errors.
     eval { $zip_file->read( $file_name ) };
     if ( $@ ) {
-		$self->_set_error( "File has zip error(s): " . join( ' ~|~ ', $@ ) );
+		$self->set_error( "File has zip error(s): " . join( ' ~|~ ', $@ ) );
 		return undef;
 	}
 
@@ -491,7 +489,7 @@ sub _check_if_ole_file {
 	
 	#Handle result
 	if( $message ){
-		$self->_set_error( $message );
+		$self->set_error( $message );
 	}else{
 		###LogSD	$phone->talk( level => 'warn', message =>[
 		###LogSD		'The OLE test passed (negative) for: ', $file_name, ], );
@@ -536,7 +534,7 @@ sub _load_workbook_file{
 	###LogSD		"rel lookup:", $rel_lookup,
 	###LogSD		"id lookup:", $id_lookup,		] );
 	if( !$list ){
-		$self->_set_error( "No worksheets identified in this workbook" );
+		$self->set_error( "No worksheets identified in this workbook" );
 		return undef;
 	}
 	$self->_set_worksheet_list( $list );
@@ -572,7 +570,7 @@ sub _load_rels_workbook_file{
 	###LogSD		"Worksheet lookup:", $sheet_ref,
 	###LogSD		"Pivot lookup:", $pivot_lookup	] );
 	if( !$found_file_names ){
-		$self->_set_error( "Couldn't find any file names for the sheets" );
+		$self->set_error( "Couldn't find any file names for the sheets" );
 		return undef;
 	}
 	$self->_set_worksheet_lookup( $sheet_ref );

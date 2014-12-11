@@ -2,7 +2,7 @@ package Spreadsheet::XLSX::Reader::LibXML::Cell;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::Cell::AUTHORITY = 'cpan:JANDREW';
 }
-use version; our $VERSION = qv('v0.24.2');
+use version; our $VERSION = qv('v0.26.2');
 #~ use Data::Dumper;
 $| = 1;
 use 5.010;
@@ -167,8 +167,8 @@ sub value{
 	###LogSD		$phone->talk( level => 'debug', message => [
 	###LogSD			'Reached the -value- function' ] );
 	###LogSD		$phone->talk( level => 'trace', message => [ "Cell:", $self ] );
-	my	$formatted;
-	my	$unformatted	= $self->unformatted;
+	my	$unformatted = $self->unformatted;
+	my	$formatted = $unformatted;
 	if( !$self->has_coercion ){
 		return $unformatted;
 	}elsif( !defined $unformatted ){

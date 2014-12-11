@@ -2,7 +2,7 @@ package Spreadsheet::XLSX::Reader::LibXML::ParseExcelFormatStrings;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::ParseExcelFormatStrings::AUTHORITY = 'cpan:JANDREW';
 }
-use version; our $VERSION = qv('v0.24.2');
+use version; our $VERSION = qv('v0.26.2');
 
 use 5.010;
 use Moose::Role;
@@ -1605,8 +1605,7 @@ Spreadsheet::XLSX::Reader::LibXML::ParseExcelFormatStrings - Parser of XLSX form
 
 	sub get_log_space{};
 	
-	with 	'Spreadsheet::XLSX::Reader::LibXML::UtilFunctions',
-			'Spreadsheet::XLSX::Reader::LibXML::FmtDefault';
+	with 	'Spreadsheet::XLSX::Reader::LibXML::FmtDefault';
 	# call 'with' a second time to ensure that the prior methods are recorded
 	with	'Spreadsheet::XLSX::Reader::LibXML::ParseExcelFormatStrings';
 

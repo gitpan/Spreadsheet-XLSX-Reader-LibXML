@@ -2,7 +2,7 @@ package Spreadsheet::XLSX::Reader::LibXML::XMLReader::Styles;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::XMLReader::Styles::AUTHORITY = 'cpan:JANDREW';
 }
-use version; our $VERSION = qv('v0.24.2');
+use version; our $VERSION = qv('v0.26.2');
 
 use 5.010;
 use Moose;
@@ -18,7 +18,6 @@ use lib	'../../../../../../lib',;
 extends	'Spreadsheet::XLSX::Reader::LibXML::XMLReader';
 with	'Spreadsheet::XLSX::Reader::LibXML::XMLReader::XMLToPerlData',
 		'Spreadsheet::XLSX::Reader::LibXML::LogSpace',
-		'Spreadsheet::XLSX::Reader::LibXML::UtilFunctions',
 		;
 
 #########1 Dispatch Tables & Package Variables    5#########6#########7#########8#########9

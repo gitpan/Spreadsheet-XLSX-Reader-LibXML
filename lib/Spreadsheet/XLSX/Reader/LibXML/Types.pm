@@ -2,7 +2,7 @@ package Spreadsheet::XLSX::Reader::LibXML::Types;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::Types::AUTHORITY = 'cpan:JANDREW';
 }
-use version; our $VERSION = qv('v0.26.2');
+use version; our $VERSION = qv('v0.28.2');
 		
 use strict;
 use warnings;
@@ -14,8 +14,9 @@ use Type::Library 0.046
 		ParserType					Excel_number_0				EpochYear
 		PassThroughType				CellID						PositiveNum
 		NegativeNum					ZeroOrUndef					NotNegativeNum
-						
+		IOFileType
 	);
+use IO::File;
 BEGIN{ extends "Types::Standard" };
 #~ use Types::Standard  qw( Str InstanceOf Enum Num Any Maybe StrMatch );
 my $try_xs =
@@ -28,8 +29,6 @@ if( $try_xs and exists $INC{'Type/Tiny/XS.pm'} ){
 		die "You have loaded Type::Tiny::XS but versions prior to 0.010 will cause this module to fail";
 	}
 }
-#~ use lib	'../../../../lib',;
-#~ ###LogSD	use Log::Shiras::Telephone;
 
 #########1 Package Variables  3#########4#########5#########6#########7#########8#########9
 
@@ -57,34 +56,32 @@ declare XMLFile,
 			'No value passed to the XMLFile test';
     };
 
-my	$io_file_instance = InstanceOf[ 'IO::File' ];
 declare XLSXFile,
-	as Str|GlobRef|$io_file_instance,
-	where{
-		if( is_Str( $_ ) ){
-			return $_ =~ /\.xlsx$/ and -r $_;
-		}elsif( is_GlobRef( $_ ) ){
-			return 1;
-		}elsif( $io_file_instance->check( $_ ) ){
-			return 1;
-		}else{
-			return 0;
-		}
-	},
+	as Str,
+	where{ $_ =~ /\.xlsx$/ and -r $_ },
 	message{
-		my $return;
 		my $test = $_;
-		if( !$test){
-			$return = 'No value passed to the XMLFile test';
-		}elsif( is_Str( $test ) ){
-			$return = ( $test !~ /\.xml$/ ) ?
-				"The string -$test- does not have an xml file extension" :
-				"Could not find / read the file: $test" ;
-		}else{
-			$return = "|$test| is not a file handle I recognize";
-		}
+		my $return =
+			( ref $test ) ?
+				"'" . ($test ? $test : '' ) . "' is not a string value" :
+			( $test !~ /\.xlsx$/ ) ?
+				"The string -$test- does not have an xlsx file extension" :
+			( -r $test) ?
+				"Could not find / read the file: $test" :
+				"Unmanageable value '" . ($test ? $test : '' ) . "' passed" ;
 		return $return;
     };
+	
+declare IOFileType,
+	as InstanceOf[ 'IO::File' ];
+	
+coerce IOFileType,
+	from GlobRef,
+	via{  bless $_, 'IO::File' };
+	
+coerce IOFileType,
+	from XLSXFile,
+	via{  IO::File->new( $_, 'r' ); };
 
 declare ParserType, 
 	as Enum[qw( reader )];#dom  sax

@@ -113,4 +113,13 @@ v0.24.2   2014-12-09 05:18:13-08:00 America/Los_Angeles
 
 v0.26.2   2014-12-11 08:57:26-08:00 America/Los_Angeles
 
-	! Fixed the requires missing role bug (github missing role?)
+	! Fixed the 'requires missing role' bug (github issue -> missing role?)
+
+v0.28.2   2014-12-13 20:30:26-08:00 America/Los_Angeles
+
+	! Fixed #15 issue in github (Return precedence error)
+	- Closed #2 issue in github (Remove the OLE::Storage_lite dependancy)
+	! Closes #17 in github (Allow parse to accept either a file name or a file handle)
+		+ Added a file_handle attribute to support passing either file handles or file names
+		+ Improved the test file 01-types.t to include coercions and error message checking
+	

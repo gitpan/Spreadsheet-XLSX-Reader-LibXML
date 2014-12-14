@@ -2,14 +2,15 @@ package Spreadsheet::XLSX::Reader::LibXML::GetCell;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::GetCell::AUTHORITY = 'cpan:JANDREW';
 }
-use version; our $VERSION = qv('v0.24.2');
+use version; our $VERSION = qv('v0.28.2');
 
 use	Moose::Role;
 requires qw(
-	get_log_space				set_error					min_row
-	max_row						min_col						max_col
-	row_range					col_range
+	set_error					min_row						max_row
+	min_col						max_col						row_range
+	col_range
 );
+###LogSD	requires 'get_log_space';
 use Types::Standard qw(
 	Bool 						HasMethods					Enum
 	Int							is_Int						ArrayRef
@@ -492,7 +493,7 @@ sub _build_out_the_cell{
 		$result->{cell_col} = $self->_get_used_position( $result->{col} );
 		delete $result->{col};
 		$result->{error_inst} = $self->_get_error_inst;
-		$result->{log_space} = $self->get_log_space . '::Cell';
+###LogSD	$result->{log_space} = $self->get_log_space . '::Cell';
 		$result->{unformatted_converter} = sub{ 
 			my	$string = $_[0];
 			###LogSD	$phone->talk( level => 'debug', message =>[
@@ -557,15 +558,6 @@ managed with the workbook attribute L<counting_from_zero
 These are method(s) used by this Role but not provided by the role.  Any class consuming this 
 role will not build without first providing these methods prior to loading this role.  
 I<Since this is the center of data coallation the list is long>.
-
-=head3 get_log_space
-
-=over
-
-B<Definition:> Used to return the log space used by the code protected by ###LogSD.  See
-L<Log::Shiras|https://github.com/jandrew/Log-Shiras> for more information.
-
-=back
 
 =head3 set_error( $error_string )
 

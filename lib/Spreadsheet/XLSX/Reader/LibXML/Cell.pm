@@ -2,8 +2,8 @@ package Spreadsheet::XLSX::Reader::LibXML::Cell;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::Cell::AUTHORITY = 'cpan:JANDREW';
 }
-use version; our $VERSION = qv('v0.28.2');
-#~ use Data::Dumper;
+use version; our $VERSION = qv('v0.30.2');
+
 $| = 1;
 use 5.010;
 use Moose;
@@ -19,7 +19,7 @@ my	$message_type = HasMethods[ 'message' ];
 use lib	'../../../../../lib';
 ###LogSD	use Log::Shiras::Telephone;
 ###LogSD	use Log::Shiras::UnhideDebug;
-###LogSD	with 'Spreadsheet::XLSX::Reader::LibXML::LogSpace';
+###LogSD	with 'Log::Shiras::LogSpace';
 use	Spreadsheet::XLSX::Reader::LibXML::Types qw(
 		CellID
 	);

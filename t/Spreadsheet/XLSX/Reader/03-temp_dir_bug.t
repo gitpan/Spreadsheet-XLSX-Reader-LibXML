@@ -25,11 +25,11 @@ use	Test::Moose;
 use	lib	'../../../../../Log-Shiras/lib',
 		$lib,
 	;
-#~ use Log::Shiras::Switchboard v0.21 qw( :debug );#
+#~ use Log::Shiras::Switchboard v0.23 qw( :debug );#
 ###LogSD	my	$operator = Log::Shiras::Switchboard->get_operator(
 ###LogSD						name_space_bounds => {
 ###LogSD							UNBLOCK =>{
-###LogSD								log_file => 'trace',
+###LogSD								log_file => 'debug',
 ###LogSD							},
 ###LogSD						},
 ###LogSD						reports =>{
@@ -49,7 +49,7 @@ my  (
 ###LogSD		$phone->talk( level => 'info', message => [ "harder questions ..." ] );
 lives_ok{
 			$parser =	Spreadsheet::XLSX::Reader::LibXML->new(
-							log_space => 'Test',
+			###LogSD		log_space => 'Test',
 							file_name => $test_file,
 						);
 }										"Prep a test parser instance";
@@ -59,6 +59,7 @@ is			$parser->error(), undef,	"Write any error messages from the file load";
 				$worksheet->get_cell( 1,1 );# Advance the worksheet reader past the beginning
 				#~ last;
 			}
+
 lives_ok{	$parser->DEMOLISH }			"Make sure the Temp Dir cleanup works";
 explain 								"...Test Done";
 done_testing();

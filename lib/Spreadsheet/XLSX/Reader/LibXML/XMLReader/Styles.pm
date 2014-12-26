@@ -2,12 +2,13 @@ package Spreadsheet::XLSX::Reader::LibXML::XMLReader::Styles;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::XMLReader::Styles::AUTHORITY = 'cpan:JANDREW';
 }
-use version; our $VERSION = qv('v0.28.2');
+use version; our $VERSION = qv('v0.30.2');
 
 use 5.010;
 use Moose;
 use MooseX::StrictConstructor;
 use MooseX::HasDefaults::RO;
+use Carp qw( confess );
 use Types::Standard qw(
 		InstanceOf			HashRef				Str
 		Int					Bool
@@ -17,8 +18,8 @@ use lib	'../../../../../../lib',;
 ###LogSD	use Log::Shiras::UnhideDebug;
 extends	'Spreadsheet::XLSX::Reader::LibXML::XMLReader';
 with	'Spreadsheet::XLSX::Reader::LibXML::XMLReader::XMLToPerlData',
-		'Spreadsheet::XLSX::Reader::LibXML::LogSpace',
 		;
+###LogSD	with 'Log::Shiras::LogSpace';
 
 #########1 Dispatch Tables & Package Variables    5#########6#########7#########8#########9
 
@@ -216,16 +217,30 @@ sub _load_unique_bits{
 	my( $self, ) = @_;
 	###LogSD	my	$phone = Log::Shiras::Telephone->new( name_space =>
 	###LogSD					$self->get_log_space .  '::_load_unique_bits', );
+	###LogSD		$phone->talk( level => 'trace', message => [ 'self:', $self ] );
 	###LogSD		$phone->talk( level => 'debug', message => [
 	###LogSD			"Loading the counts and attributes of all the style types",
-	###LogSD			'bytes consumed: ' . $self->byte_consumed, 'At node: ' . $self->node_name ] );
-	if( $self->node_name ne 'styleSheet' ){
+	###LogSD			'bytes consumed: ' . $self->byte_consumed, 'At node: ' . ($self->node_name//'') ] );
+	if( !$self->node_name ){
+		if( $self->byte_consumed > 0 ){
+			###LogSD	$phone->talk( level => 'trace', message => [
+			###LogSD		'The file is probably at the end - restting the file' ] );
+			$self->start_the_file_over;
+		}
+		$self->next_element( 'styleSheet' );
+		###LogSD		$phone->talk( level => 'debug', message => [
+		###LogSD			"Loading the counts and attributes of all the style types",
+		###LogSD			'bytes consumed: ' . $self->byte_consumed, 'At node: ' . ($self->node_name//'') ] );
+	}elsif( $self->node_name ne 'styleSheet' ){
 		$self->next_element( 'styleSheet' );
 		###LogSD	$phone->talk( level => 'trace', message => [
 		###LogSD		'bytes consumed: ' . $self->byte_consumed, 'At node: ' . $self->node_name ] );
 	}
 	###LogSD	$phone->talk( level => 'trace', message => [
-	###LogSD		'lower level ? bytes consumed: ' . $self->byte_consumed, 'At node: ' . $self->node_name ] );
+	###LogSD		'lower level ? bytes consumed: ' . $self->byte_consumed, 'At node: ' . ($self->node_name//'') ] );
+	if( !$self->node_name or $self->node_name ne 'styleSheet' ){
+		confess "Can't find the styleSheet node in the xml file / section";
+	}
 	my	$top_level_ref = $self->parse_element( 2 );
 	###LogSD	$phone->talk( level => 'debug', message => [
 	###LogSD		"Resulting parse:", $top_level_ref ] );
@@ -319,10 +334,8 @@ sub _get_header_and_position{
 	if( $target_position > $sub_position ){
 		$sub_position++ if $self->_get_last_recorded == 1;
 		$self->_set_last_recorded( 0 );
-		#~ my $ref = $self->parse_element;
 		###LogSD	$phone->talk( level => 'debug', message => [
-		###LogSD		"Sub position now: $sub_position",] );# $ref 
-		#~ $changed_position = 1;
+		###LogSD		"Sub position now: $sub_position",] );
 		while( $target_position > $sub_position ){
 			my $result = $self->next_element( $element_name );
 			$sub_position++;

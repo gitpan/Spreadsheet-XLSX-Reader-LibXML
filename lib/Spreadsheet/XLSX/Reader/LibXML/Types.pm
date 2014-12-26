@@ -2,7 +2,7 @@ package Spreadsheet::XLSX::Reader::LibXML::Types;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::Types::AUTHORITY = 'cpan:JANDREW';
 }
-use version; our $VERSION = qv('v0.28.2');
+use version; our $VERSION = qv('v0.30.2');
 		
 use strict;
 use warnings;
@@ -18,7 +18,6 @@ use Type::Library 0.046
 	);
 use IO::File;
 BEGIN{ extends "Types::Standard" };
-#~ use Types::Standard  qw( Str InstanceOf Enum Num Any Maybe StrMatch );
 my $try_xs =
 		exists($ENV{PERL_TYPE_TINY_XS}) ? !!$ENV{PERL_TYPE_TINY_XS} :
 		exists($ENV{PERL_ONLY})         ?  !$ENV{PERL_ONLY} :
@@ -62,8 +61,10 @@ declare XLSXFile,
 	message{
 		my $test = $_;
 		my $return =
+			( !defined $test ) ?
+				"Empty filename" :
 			( ref $test ) ?
-				"'" . ($test ? $test : '' ) . "' is not a string value" :
+				"'" . $test . "' is not a string value" :
 			( $test !~ /\.xlsx$/ ) ?
 				"The string -$test- does not have an xlsx file extension" :
 			( -r $test) ?

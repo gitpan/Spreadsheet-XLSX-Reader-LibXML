@@ -122,4 +122,21 @@ v0.28.2   2014-12-13 20:30:26-08:00 America/Los_Angeles
 	! Closes #17 in github (Allow parse to accept either a file name or a file handle)
 		+ Added a file_handle attribute to support passing either file handles or file names
 		+ Improved the test file 01-types.t to include coercions and error message checking
+
+v0.30.0   2014-12-15 12:51:23-08:00 America/Los_Angeles
+
+	+ Closed #16 in github by moving the role Spreadsheet::XLSX::Reader::LibXML::LogSpace to Log::Shiras::LogSpace
+		and moving all the attribute callouts behind ###LogSD comments
+	+ Closed #19 in github by expanding the allowed width of the match data reference pointer when checking the 
+		answer for specific errors
+
+v0.30.2   2014-12-25 21:25:32-08:00 America/Los_Angeles
+
+	! Closed #20 in github (pull request for undef FileType message specificity)
+	+ Closed #3 in github Move Temp::Dir methods to Archive::Zip in github
+		This is a big change since it changes some of the extensibility API's
+		It also changes the way the initial file is locked.  It used to unzip the file to a 
+		temporory directory and then unlock the file.  Now it holds a lock on the file during the whole read.
+	! Closed #18 in github.  The temp dir management is very different
+		The failing solo SciTE GUI test 03-temp_dir_bug.t now passes.
 	

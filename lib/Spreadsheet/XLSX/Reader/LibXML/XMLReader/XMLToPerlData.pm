@@ -2,7 +2,7 @@ package Spreadsheet::XLSX::Reader::LibXML::XMLReader::XMLToPerlData;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::XMLReader::XMLToPerlData::AUTHORITY = 'cpan:JANDREW';
 }
-use version; our $VERSION = qv('v0.28.2');
+use version; our $VERSION = qv('v0.30.2');
 
 use	Moose::Role;
 use 5.010;
@@ -10,6 +10,7 @@ requires qw(
 	node_name	byte_consumed	move_to_first_att	move_to_next_att
 	inner_xml	next_element	node_depth			node_value
 );
+###LogSD	requires 'get_log_space';
 ###LogSD	use Log::Shiras::Telephone;
 
 #########1 Dispatch Tables    3#########4#########5#########6#########7#########8#########9
@@ -27,7 +28,7 @@ sub parse_element{
 	###LogSD	my	$phone = Log::Shiras::Telephone->new( name_space =>
 	###LogSD					($self->get_log_space .  '::parse_element' ), );
 	###LogSD		$phone->talk( level => 'debug', message =>[
-	###LogSD			"Parsing element: " . $self->node_name,
+	###LogSD			"Parsing element: " . ($self->node_name//''),
 	###LogSD			".. at byte position: " . $self->byte_consumed,
 	###LogSD			(( defined $level ) ? "..to level: $level" : undef ),] );
 	my $current_level //= $self->node_depth;
@@ -38,7 +39,7 @@ sub parse_element{
 	###LogSD	$phone->talk( level => 'trace', message => [
 	###LogSD		"Result of the first attribute move: $result",
 	###LogSD		".. at byte position: " . $self->byte_consumed,
-	###LogSD		'..for node name: ' . $self->node_name			] );
+	###LogSD		'..for node name: ' . ($self->node_name//'')	] );
 	ATTRIBUTELIST: while( $result > 0 ){
 		my $att_name = $self->node_name;
 		my $att_value = $self->node_value;
@@ -77,7 +78,7 @@ sub parse_element{
 		###LogSD		'..at byte position: ' . $self->byte_consumed, ] );
 	}else{
 		###LogSD	$phone->talk( level => 'debug', message => [
-		###LogSD		"Pre dive node name: " . $self->node_name ] );
+		###LogSD		"Pre dive node name: " . ($self->node_name//'') ] );
 		$result = $self->next_element;
 		###LogSD	$phone->talk( level => 'debug', message => [
 		###LogSD		"Attempted to go deeper with result: $result",
@@ -103,7 +104,6 @@ sub parse_element{
 			###LogSD		"Bytes consumed: $byte_count"] );
 			
 			# Go down as possible
-			#~ my $not_indexed = 1;
 			while( (( $self->node_depth - 1 ) > $current_level) ){
 					#~ or ($not_indexed and !ref $sub_ref)				){figure this out!!!
 				###LogSD	$phone->talk( level => 'debug', message => [
@@ -113,7 +113,6 @@ sub parse_element{
 				###LogSD		"Node index result: $result",
 				###LogSD		(($self->node_name) ? ('libxml2 current node name: ' . $self->node_name) : undef),
 				###LogSD		'libxml2 current node depth: ' . $self->node_depth ] );
-				#~ $not_indexed = 0;
 			}
 			
 			# Go up when finished

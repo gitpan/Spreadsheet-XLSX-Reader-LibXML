@@ -2,7 +2,7 @@ package Spreadsheet::XLSX::Reader::LibXML::Cell;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::Cell::AUTHORITY = 'cpan:JANDREW';
 }
-use version; our $VERSION = qv('v0.30.2');
+use version; our $VERSION = qv('v0.32.2');
 
 $| = 1;
 use 5.010;
@@ -15,7 +15,6 @@ use Types::Standard qw(
 		Int					Maybe					CodeRef
 		is_Object
     );
-my	$message_type = HasMethods[ 'message' ];
 use lib	'../../../../../lib';
 ###LogSD	use Log::Shiras::Telephone;
 ###LogSD	use Log::Shiras::UnhideDebug;
@@ -180,14 +179,7 @@ sub value{
 		###LogSD		"Attempting to return the value of the cell formatted to " .
 		###LogSD		(($self->has_coercion) ? $self->coercion_name : 'No conversion available' ) ] );
 		eval '$formatted = $self->get_coercion->assert_coerce( $unformatted )';
-		if( $@ ){
-			if( is_Object( $@ ) and $message_type->check( $@ ) ){
-				print $@->message . "\n";
-				$self->set_error( $@->message );
-			}else{
-				$self->set_error( "$@" );
-			}
-		}
+		$self->set_error( $@ ) if( $@ );
 	}
 	$formatted =~ s/\\//g if $formatted;
 	###LogSD	$phone->talk( level => 'debug', message => [

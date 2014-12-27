@@ -139,4 +139,7 @@ v0.30.2   2014-12-25 21:25:32-08:00 America/Los_Angeles
 		temporory directory and then unlock the file.  Now it holds a lock on the file during the whole read.
 	! Closed #18 in github.  The temp dir management is very different
 		The failing solo SciTE GUI test 03-temp_dir_bug.t now passes.
-	
+
+v0.32.2   2014-12-26 16:25:30-08:00 America/Los_Angeles
+
+	! Closed #21 issue with error objects vs error strings - solved with a type coercion

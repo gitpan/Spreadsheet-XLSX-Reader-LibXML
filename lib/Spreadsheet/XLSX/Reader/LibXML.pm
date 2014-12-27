@@ -2,7 +2,7 @@ package Spreadsheet::XLSX::Reader::LibXML;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::AUTHORITY = 'cpan:JANDREW';
 }
-use version 0.77; our $VERSION = qv('v0.30.2');
+use version 0.77; our $VERSION = qv('v0.32.2');
 
 use 5.010;
 use	List::Util 1.33;
@@ -225,8 +225,7 @@ sub parse{
 	}
 	if( $@ ){
 		my $error_message = $@;
-		$error_message =~ s/\)\n;/\);/g;
-		###LogSD	$phone->talk( level => 'info', message =>[ "saving error:\n$error_message", ] );
+		###LogSD	$phone->talk( level => 'info', message =>[ 'saving error:', $error_message, ] );
 		$self->set_error( $error_message );
 		return undef;
 	}else{

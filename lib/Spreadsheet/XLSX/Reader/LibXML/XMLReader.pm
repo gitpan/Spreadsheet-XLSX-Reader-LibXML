@@ -2,7 +2,7 @@ package Spreadsheet::XLSX::Reader::LibXML::XMLReader;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::XMLReader::AUTHORITY = 'cpan:JANDREW';
 }
-use version; our $VERSION = qv('v0.32.2');
+use version; our $VERSION = qv('v0.34.0');
 
 use 5.010;
 use Moose;
@@ -175,7 +175,7 @@ __END__
 
 =head1 NAME
 
-Spreadsheet::XLSX::Reader::LibXML::XMLReader - LibXML::Reader base class for xlsx sheets
+Spreadsheet::XLSX::Reader::LibXML::XMLReader - A LibXML::Reader xlsx base class
 
 =head1 SYNOPSIS
 

@@ -2,12 +2,12 @@ package Spreadsheet::XLSX::Reader::LibXML::Types;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::Types::AUTHORITY = 'cpan:JANDREW';
 }
-use version; our $VERSION = qv('v0.32.2');
+use version; our $VERSION = qv('v0.34.0');
 		
 use strict;
 use warnings;
 use Type::Utils -all;
-use Type::Library 0.046
+use Type::Library 1.000
 	-base,
 	-declare => qw(
 		FileName					XMLFile						XLSXFile

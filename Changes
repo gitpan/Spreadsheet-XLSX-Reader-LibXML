@@ -142,4 +142,11 @@ v0.30.2   2014-12-25 21:25:32-08:00 America/Los_Angeles
 
 v0.32.2   2014-12-26 16:25:30-08:00 America/Los_Angeles
 
-	! Closed #21 issue with error objects vs error strings - solved with a type coercion
+	! Closed #21 issue in github with error objects vs error strings - solved with a type coercion
+
+v0.34.0   2014-12-29 08:49:14-08:00 America/Los_Angeles
+
+	! Closed #22 issue in github by adding the requirement for Type::Tiny 1.000 (vs 0.046)
+		to implement make_immutable in the type library
+	+ Scrubbed Spreadsheet::XLSX::Reader::LibXML POD to comply better with updates
+	

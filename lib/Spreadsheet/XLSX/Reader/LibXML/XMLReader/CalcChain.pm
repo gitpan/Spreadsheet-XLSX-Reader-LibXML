@@ -2,7 +2,7 @@ package Spreadsheet::XLSX::Reader::LibXML::XMLReader::CalcChain;
 BEGIN {
   $Spreadsheet::XLSX::Reader::LibXML::XMLReader::CalcChain::AUTHORITY = 'cpan:JANDREW';
 }
-use version; our $VERSION = qv('v0.32.2');
+use version; our $VERSION = qv('v0.34.0');
 
 use 5.010;
 use Moose;
@@ -94,7 +94,7 @@ __END__
 
 =head1 NAME
 
-Spreadsheet::XLSX::Reader::LibXML::XMLReader::CalcChain - LibXML::XMLReader for the calcChain file
+Spreadsheet::XLSX::Reader::LibXML::XMLReader::CalcChain - A LibXML::Reader calcChain base class
 
 =head1 SYNOPSIS
 
